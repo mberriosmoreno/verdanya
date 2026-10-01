@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Explora las categorías de plantas disponibles en Verdanya."
+    >
+
+    <title>Categorías | Verdanya</title>
+
+
+    <!-- =====================================================
+         ESTILOS GENERALES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <!-- =====================================================
+         ESTILOS DE CATEGORÍAS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/categorias.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         ENCABEZADO
+    ====================================================== -->
+
+    <header class="encabezado">
+
+        <div class="contenedor encabezado-contenido">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <span class="logo-icono">
+                    V
+                </span>
+
+                <span>
+
+                    <span class="logo-texto">
+                        VERDANYA
+                    </span>
+
+                    <span class="logo-subtexto">
+                        Plantas que dan vida
+                    </span>
+
+                </span>
+
+            </a>
+
+
+            <!-- NAVEGACIÓN -->
+
+            <nav
+                class="navegacion"
+                aria-label="Navegación principal"
+            >
+
+                <a href="index.html">
+                    Inicio
+                </a>
+
+                <a href="productos.html">
+                    Plantas
+                </a>
+
+                <a
+                    href="categorias.html"
+                    aria-current="page"
+                >
+                    Categorías
+                </a>
+
+                <a href="contacto.html">
+                    Contacto
+                </a>
+
+                <a
+                    href="login.html"
+                    class="boton-admin"
+                >
+                    🔐 Administración
+                </a>
+
+            </nav>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             ESPACIO SUPERIOR
+        ================================================== -->
+
+        <section class="categorias-hero">
+
+            <div class="contenedor">
+
+                <div class="categorias-hero-contenido">
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LISTADO DE CATEGORÍAS
+        ================================================== -->
+
+        <section class="categorias-listado">
+
+            <div class="contenedor">
+
+
+                <!-- =================================================
+                     ENCABEZADO
+                ================================================== -->
+
+                <div class="seccion-encabezado">
+
+                    <div>
+
+                        <h2>
+                            Categorías de plantas
+                        </h2>
+
+                        <p>
+                            Explora nuestras categorías
+                            y encuentra la planta ideal
+                            para tus espacios.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        id="contador-categorias"
+                        class="contador-categorias"
+                    >
+                        Cargando categorías...
+                    </span>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ESTADO DE CARGA
+                ================================================== -->
+
+                <div
+                    id="estado-carga"
+                    class="estado-carga"
+                >
+
+                    Cargando categorías...
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ESTADO DE ERROR
+                ================================================== -->
+
+                <div
+                    id="estado-error"
+                    class="estado-error"
+                    hidden
+                >
+
+                    <h3>
+                        No fue posible cargar las categorías
+                    </h3>
+
+                    <p>
+                        Ocurrió un problema al conectar
+                        con Verdanya. Intenta nuevamente.
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ESTADO VACÍO
+                ================================================== -->
+
+                <div
+                    id="estado-vacio"
+                    class="estado-vacio"
+                    hidden
+                >
+
+                    <h3>
+                        No hay categorías disponibles
+                    </h3>
+
+                    <p>
+                        Actualmente no hay categorías
+                        publicadas en Verdanya.
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     LISTA DE CATEGORÍAS
+                ================================================== -->
+
+                <div
+                    id="lista-categorias"
+                    class="grid-categorias pagina-categorias"
+                >
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         WHATSAPP FLOTANTE
+    ====================================================== -->
+
+    <a
+        id="boton-whatsapp-general"
+        href="#"
+        class="whatsapp-flotante"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contactar por WhatsApp"
+    >
+        💬
+    </a>
+
+
+
+    <!-- =====================================================
+         PIE DE PÁGINA
+    ====================================================== -->
+
+    <footer class="pie">
+
+        <div class="contenedor">
+
+
+            <div class="pie-grid">
+
+
+                <!-- INFORMACIÓN -->
+
+                <div>
+
+                    <h3>
+                        VERDANYA
+                    </h3>
+
+                    <p>
+                        Plantas que dan vida a tus espacios.
+                    </p>
+
+                </div>
+
+
+
+                <!-- NAVEGACIÓN -->
+
+                <div>
+
+                    <h3>
+                        Navegación
+                    </h3>
+
+                    <div class="pie-enlaces">
+
+                        <a href="index.html">
+                            Inicio
+                        </a>
+
+                        <a href="productos.html">
+                            Plantas
+                        </a>
+
+                        <a href="categorias.html">
+                            Categorías
+                        </a>
+
+                        <a href="contacto.html">
+                            Contacto
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- COPYRIGHT -->
+
+            <div class="pie-final">
+
+                ©
+                <span id="anio-actual">
+                    2026
+                </span>
+                Verdanya.
+                Todos los derechos reservados.
+
+            </div>
+
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- =====================================================
+         CONFIGURACIÓN
+    ====================================================== -->
+
+    <script
+        src="js/config.js"
+    ></script>
+
+
+    <!-- =====================================================
+         CLIENTE SUPABASE
+    ====================================================== -->
+
+    <script
+        src="js/supabase.js"
+    ></script>
+
+
+    <!-- =====================================================
+         LÓGICA DE CATEGORÍAS
+    ====================================================== -->
+
+    <script
+        src="js/categorias.js"
+    ></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Catálogo de plantas Verdanya."
+    >
+
+    <meta
+        name="theme-color"
+        content="#285943"
+    >
+
+    <title>Plantas | Verdanya</title>
+
+
+    <!-- =====================================================
+         ESTILOS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/productos.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         ENCABEZADO
+    ====================================================== -->
+
+    <header class="encabezado">
+
+        <div class="contenedor encabezado-contenido">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="Verdanya - Inicio"
+            >
+
+                <div class="logo-icono">
+                    V
+                </div>
+
+                <div>
+
+                    <div class="logo-texto">
+                        VERDANYA
+                    </div>
+
+                    <span class="logo-subtexto">
+                        Plantas que dan vida
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- NAVEGACIÓN -->
+
+            <nav
+                class="navegacion"
+                aria-label="Navegación principal"
+            >
+
+                <a href="index.html">
+                    Inicio
+                </a>
+
+                <a
+                    href="productos.html"
+                    class="activo"
+                >
+                    Plantas
+                </a>
+
+                <a href="categorias.html">
+                    Categorías
+                </a>
+
+                <a href="contacto.html">
+                    Contacto
+                </a>
+
+                <a
+                    href="login.html"
+                    class="boton-admin"
+                >
+                    🔐 Administración
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             ENCABEZADO DEL CATÁLOGO
+        ================================================== -->
+
+        <section class="catalogo-hero">
+
+            <div class="contenedor">
+
+                <span class="seccion-etiqueta">
+                    CATÁLOGO VERDANYA
+                </span>
+
+                <h1>
+                    Nuestras plantas
+                </h1>
+
+                <p>
+                    Explora nuestra colección de plantas
+                    y encuentra la opción ideal para tu espacio.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FILTROS
+        ================================================== -->
+
+        <section class="catalogo">
+
+            <div class="contenedor">
+
+
+                <div class="filtros-productos">
+
+
+                    <!-- BUSCADOR -->
+
+                    <div class="campo-busqueda">
+
+                        <label for="buscar-producto">
+                            Buscar planta
+                        </label>
+
+                        <input
+                            type="search"
+                            id="buscar-producto"
+                            placeholder="Ej. Monstera, Aloe..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORÍA -->
+
+                    <div class="campo-filtro">
+
+                        <label for="filtro-categoria">
+                            Categoría
+                        </label>
+
+                        <select id="filtro-categoria">
+
+                            <option value="">
+                                Todas las categorías
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     CONTADOR
+                ========================================== -->
+
+                <div
+                    id="contador-productos"
+                    class="contador-productos"
+                >
+                    Cargando plantas...
+                </div>
+
+
+                <!-- =========================================
+                     PRODUCTOS
+                ========================================== -->
+
+                <div
+                    id="lista-productos"
+                    class="grid-productos"
+                >
+
+                    <div class="estado-carga">
+                        Cargando plantas...
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         PIE DE PÁGINA
+    ====================================================== -->
+
+    <footer class="pie">
+
+        <div class="contenedor">
+
+
+            <div class="pie-grid">
+
+
+                <!-- VERDANYA -->
+
+                <div>
+
+                    <h3>
+                        VERDANYA
+                    </h3>
+
+                    <p>
+                        Plantas que dan vida a tus espacios.
+                    </p>
+
+                </div>
+
+
+                <!-- NAVEGACIÓN -->
+
+                <div>
+
+                    <h3>
+                        Navegación
+                    </h3>
+
+                    <div class="pie-enlaces">
+
+                        <a href="index.html">
+                            Inicio
+                        </a>
+
+                        <a href="productos.html">
+                            Plantas
+                        </a>
+
+                        <a href="categorias.html">
+                            Categorías
+                        </a>
+
+                        <a href="contacto.html">
+                            Contacto
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- COPYRIGHT -->
+
+            <div class="pie-final">
+
+                © 2026 Verdanya.
+                Todos los derechos reservados.
+
+            </div>
+
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         WHATSAPP FLOTANTE
+    ====================================================== -->
+
+    <a
+        href="https://wa.me/50587129724?text=Hola%2C%20Verdanya.%20Me%20gustar%C3%ADa%20consultar%20sobre%20las%20plantas%20disponibles."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="whatsapp-flotante"
+        aria-label="Contactar por WhatsApp"
+    >
+        💬
+    </a>
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- =====================================================
+         JAVASCRIPT VERDANYA
+    ====================================================== -->
+
+    <script src="js/config.js"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/productos.js"></script>
+
+
+</body>
+
+</html>

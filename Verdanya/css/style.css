@@ -1,0 +1,880 @@
+/* =========================================================
+   VERDANYA
+   ESTILOS GENERALES
+   Identidad verde + dorado
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+    --verde-oscuro: #285943;
+    --verde: #3f7d58;
+    --verde-claro: #6fa878;
+    --verde-suave: #dfeee2;
+
+    --dorado: #c9a227;
+    --dorado-claro: #e5c65a;
+
+    --crema: #f5f0df;
+    --crema-claro: #faf7ed;
+
+    --blanco: #ffffff;
+    --gris-claro: #e8e8e2;
+    --gris: #777777;
+    --gris-oscuro: #333333;
+
+    --sombra: 0 8px 22px rgba(40, 89, 67, 0.12);
+    --sombra-hover: 0 12px 30px rgba(40, 89, 67, 0.20);
+
+    --radio: 14px;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--crema);
+    color: var(--gris-oscuro);
+    line-height: 1.6;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   CONTENEDOR
+========================================================= */
+
+.contenedor {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.encabezado {
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.encabezado-contenido {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icono {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--dorado);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--verde-oscuro);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.logo-texto {
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.logo-subtexto {
+    display: block;
+    font-size: 11px;
+    color: var(--dorado-claro);
+    margin-top: -4px;
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+.navegacion {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.navegacion a {
+    color: var(--blanco);
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.navegacion a:hover {
+    color: var(--dorado-claro);
+}
+
+.navegacion .boton-admin {
+    border: 1px solid var(--dorado);
+    color: var(--dorado-claro);
+    padding: 8px 14px;
+    border-radius: 8px;
+}
+
+.navegacion .boton-admin:hover {
+    background: var(--dorado);
+    color: var(--verde-oscuro);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(40, 89, 67, 0.97),
+            rgba(63, 125, 88, 0.92)
+        );
+    color: var(--blanco);
+    padding: 90px 0;
+}
+
+.hero-contenido {
+    max-width: 720px;
+}
+
+.hero-etiqueta {
+    display: inline-block;
+    background: rgba(201, 162, 39, 0.18);
+    border: 1px solid rgba(229, 198, 90, 0.55);
+    color: var(--dorado-claro);
+    padding: 7px 15px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.05;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: var(--dorado-claro);
+}
+
+.hero p {
+    font-size: 20px;
+    max-width: 650px;
+    color: #f3f1e7;
+    margin-bottom: 30px;
+}
+
+.hero-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 9px;
+    padding: 12px 20px;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.boton:hover {
+    transform: translateY(-2px);
+}
+
+.boton-principal {
+    background: var(--dorado);
+    color: var(--verde-oscuro);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.boton-principal:hover {
+    background: var(--dorado-claro);
+}
+
+.boton-secundario {
+    background: transparent;
+    color: var(--blanco);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+}
+
+.boton-secundario:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.boton-verde {
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+.boton-verde:hover {
+    background: var(--verde-oscuro);
+}
+
+.boton-whatsapp {
+    background: #25d366;
+    color: var(--blanco);
+}
+
+.boton-whatsapp:hover {
+    background: #1ebe5b;
+}
+
+
+/* =========================================================
+   SECCIONES
+========================================================= */
+
+.seccion {
+    padding: 70px 0;
+}
+
+.seccion-crema {
+    background: var(--crema);
+}
+
+.seccion-verde-suave {
+    background: var(--verde-suave);
+}
+
+.seccion-blanca {
+    background: var(--blanco);
+}
+
+.seccion-encabezado {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.seccion-encabezado h2 {
+    color: var(--verde-oscuro);
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.seccion-encabezado p {
+    color: var(--gris);
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   TARJETAS DE CATEGORÍAS
+========================================================= */
+
+.grid-categorias {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.tarjeta-categoria {
+    background: var(--verde);
+    color: var(--blanco);
+    border-radius: var(--radio);
+    padding: 28px 22px;
+    text-align: center;
+    box-shadow: var(--sombra);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.tarjeta-categoria:hover {
+    transform: translateY(-5px);
+    background: var(--verde-oscuro);
+    box-shadow: var(--sombra-hover);
+}
+
+.tarjeta-categoria-icono {
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 16px;
+
+    border-radius: 50%;
+
+    background: var(--dorado);
+    color: var(--verde-oscuro);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.tarjeta-categoria h3 {
+    margin-bottom: 5px;
+    font-size: 19px;
+}
+
+.tarjeta-categoria p {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+
+/* =========================================================
+   GRID PRODUCTOS
+========================================================= */
+
+.grid-productos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+
+/* =========================================================
+   TARJETA PRODUCTO
+========================================================= */
+
+.tarjeta-producto {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    overflow: hidden;
+
+    border: 1px solid rgba(40, 89, 67, 0.10);
+
+    box-shadow: var(--sombra);
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-hover);
+}
+
+
+/* =========================================================
+   IMAGEN DEL PRODUCTO
+========================================================= */
+
+.tarjeta-producto-enlace {
+    display: block;
+    background: #edf2e9;
+}
+
+.tarjeta-producto-imagen {
+    width: 100%;
+    height: 240px;
+
+    object-fit: contain;
+    object-position: center;
+
+    display: block;
+
+    background: #edf2e9;
+
+    padding: 10px;
+}
+
+
+/* =========================================================
+   CONTENIDO DEL PRODUCTO
+========================================================= */
+
+.tarjeta-producto-contenido {
+    position: relative;
+    z-index: 2;
+
+    padding: 20px;
+
+    background: var(--blanco);
+
+    flex: 1;
+}
+
+.tarjeta-producto-categoria {
+    color: var(--verde);
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 6px;
+}
+
+.tarjeta-producto-titulo {
+    color: var(--verde-oscuro);
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.tarjeta-producto-descripcion {
+    color: var(--gris);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.tarjeta-producto-precio {
+    color: var(--verde-oscuro);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   ACCIONES PRODUCTO
+========================================================= */
+
+.tarjeta-producto-acciones {
+    padding: 0 20px 20px;
+
+    display: flex;
+    gap: 10px;
+
+    background: var(--blanco);
+}
+
+.tarjeta-producto-acciones .boton {
+    flex: 1;
+}
+
+
+/* =========================================================
+   ETIQUETA DESTACADO
+========================================================= */
+
+.etiqueta-destacado {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+
+    background: var(--dorado);
+    color: var(--verde-oscuro);
+
+    font-size: 12px;
+    font-weight: bold;
+
+    padding: 6px 10px;
+    border-radius: 20px;
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   BUSCADOR / FILTROS
+========================================================= */
+
+.filtros-productos {
+    background: var(--crema-claro);
+    border: 1px solid rgba(40, 89, 67, 0.12);
+
+    padding: 20px;
+    border-radius: var(--radio);
+
+    margin-bottom: 35px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+}
+
+.campo-busqueda {
+    flex: 1;
+    min-width: 240px;
+}
+
+.campo-busqueda input,
+.filtro-categoria select {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #cfd7cc;
+    border-radius: 9px;
+
+    background: var(--blanco);
+    color: var(--gris-oscuro);
+
+    outline: none;
+}
+
+.campo-busqueda input:focus,
+.filtro-categoria select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(63, 125, 88, 0.12);
+}
+
+
+/* =========================================================
+   MENSAJES
+========================================================= */
+
+.mensaje {
+    padding: 18px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.mensaje-info {
+    background: #e7f0e9;
+    color: var(--verde-oscuro);
+    border: 1px solid #c8dccd;
+}
+
+.mensaje-error {
+    background: #f8e5e2;
+    color: #8c3025;
+    border: 1px solid #e8bdb7;
+}
+
+
+/* =========================================================
+   PRODUCTO SIN RESULTADOS
+========================================================= */
+
+.sin-resultados {
+    text-align: center;
+    padding: 60px 20px;
+
+    background: var(--crema-claro);
+
+    border: 1px dashed #b9c6b8;
+    border-radius: var(--radio);
+}
+
+.sin-resultados h3 {
+    color: var(--verde-oscuro);
+    margin-bottom: 8px;
+}
+
+.sin-resultados p {
+    color: var(--gris);
+}
+
+
+/* =========================================================
+   WHATSAPP FLOTANTE
+========================================================= */
+
+.whatsapp-flotante {
+    position: fixed;
+
+    right: 22px;
+    bottom: 22px;
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    background: #25d366;
+    color: var(--blanco);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.22);
+
+    z-index: 999;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.whatsapp-flotante:hover {
+    transform: scale(1.08);
+    background: #1ebe5b;
+}
+
+
+/* =========================================================
+   PIE DE PÁGINA
+========================================================= */
+
+.pie {
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+
+    padding: 45px 0 25px;
+
+    margin-top: 0;
+}
+
+.pie-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.pie h3 {
+    color: var(--dorado-claro);
+    margin-bottom: 14px;
+}
+
+.pie p {
+    color: #dfe7df;
+    font-size: 14px;
+}
+
+.pie a {
+    color: #dfe7df;
+}
+
+.pie a:hover {
+    color: var(--dorado-claro);
+}
+
+.pie-enlaces {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pie-final {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+
+    margin-top: 35px;
+    padding-top: 20px;
+
+    text-align: center;
+
+    color: #c8d1ca;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+.texto-centro {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .grid-productos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-categorias {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pie-grid {
+        grid-template-columns: 2fr 1fr;
+        gap: 45px;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .encabezado-contenido {
+        min-height: auto;
+        padding: 15px 0;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .navegacion {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 18px;
+    }
+
+    .hero {
+        padding: 65px 0;
+    }
+
+    .grid-productos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-categorias {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .contenedor {
+        width: 94%;
+    }
+
+    .hero h1 {
+        font-size: 39px;
+    }
+
+    .hero p {
+        font-size: 17px;
+    }
+
+    .hero-botones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-botones .boton {
+        width: 100%;
+    }
+
+    .seccion {
+        padding: 50px 0;
+    }
+
+    .seccion-encabezado h2 {
+        font-size: 29px;
+    }
+
+    .grid-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-categorias {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta-producto-imagen {
+        height: 260px;
+    }
+
+    .tarjeta-producto-acciones {
+        flex-direction: column;
+    }
+
+
+    /* =====================================================
+       FOOTER EN MÓVIL
+    ====================================================== */
+
+    .pie {
+        padding: 40px 0 22px;
+    }
+
+    .pie-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+
+    /* =====================================================
+       WHATSAPP EN MÓVIL
+    ====================================================== */
+
+    .whatsapp-flotante {
+        width: 52px;
+        height: 52px;
+
+        right: 16px;
+        bottom: 16px;
+    }
+
+}

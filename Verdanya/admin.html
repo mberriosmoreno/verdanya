@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Panel administrativo de Verdanya."
+    >
+
+    <title>Administración | Verdanya</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+<body class="pagina-admin">
+
+    <!-- =====================================================
+         ENCABEZADO
+    ====================================================== -->
+
+    <header class="encabezado admin-encabezado">
+
+        <div class="contenedor encabezado-contenido">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                VERDANYA
+            </a>
+
+            <div class="admin-encabezado-acciones">
+
+                <a
+                    href="index.html"
+                    class="boton boton-secundario"
+                >
+                    Ver sitio
+                </a>
+
+                <button
+                    type="button"
+                    id="boton-cerrar-sesion"
+                    class="boton boton-admin-salir"
+                >
+                    Cerrar sesión
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="admin-principal">
+
+        <div class="contenedor">
+
+
+            <!-- =================================================
+                 CABECERA
+            ================================================== -->
+
+            <section class="admin-bienvenida">
+
+                <div>
+
+                    <span class="admin-etiqueta">
+                        PANEL ADMINISTRATIVO
+                    </span>
+
+                    <h1>
+                        Administración de Verdanya
+                    </h1>
+
+                    <p>
+                        Gestiona tu catálogo de plantas,
+                        categorías e información de productos.
+                    </p>
+
+                </div>
+
+                <div class="admin-usuario">
+
+                    <span>
+                        Sesión activa
+                    </span>
+
+                    <strong id="usuario-correo">
+                        Cargando...
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 MENSAJE GENERAL
+            ================================================== -->
+
+            <div
+                id="mensaje-admin"
+                class="mensaje-admin"
+                role="alert"
+                aria-live="polite"
+            ></div>
+
+
+            <!-- =================================================
+                 RESUMEN
+            ================================================== -->
+
+            <section class="admin-resumen">
+
+                <article class="admin-metrica">
+
+                    <div class="admin-metrica-icono">
+                        🌿
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Categorías
+                        </span>
+
+                        <strong id="total-categorias">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="admin-metrica">
+
+                    <div class="admin-metrica-icono">
+                        🪴
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Productos
+                        </span>
+
+                        <strong id="total-productos">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="admin-metrica">
+
+                    <div class="admin-metrica-icono">
+                        ⭐
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Destacados
+                        </span>
+
+                        <strong id="total-destacados">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="admin-metrica">
+
+                    <div class="admin-metrica-icono">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Activos
+                        </span>
+
+                        <strong id="total-activos">
+                            0
+                        </strong>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 CATEGORÍAS
+            ================================================== -->
+
+            <section class="admin-seccion">
+
+                <div class="admin-seccion-cabecera">
+
+                    <div>
+
+                        <span class="admin-seccion-etiqueta">
+                            ORGANIZACIÓN
+                        </span>
+
+                        <h2>
+                            Categorías
+                        </h2>
+
+                        <p>
+                            Administra las categorías de tu catálogo.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="boton-nueva-categoria"
+                        class="boton boton-principal"
+                    >
+                        + Nueva categoría
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="lista-categorias-admin"
+                    class="admin-tabla-contenedor"
+                >
+
+                    <div class="admin-cargando">
+                        Cargando categorías...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PRODUCTOS
+            ================================================== -->
+
+            <section class="admin-seccion">
+
+                <div class="admin-seccion-cabecera">
+
+                    <div>
+
+                        <span class="admin-seccion-etiqueta">
+                            CATÁLOGO
+                        </span>
+
+                        <h2>
+                            Productos
+                        </h2>
+
+                        <p>
+                            Administra las plantas disponibles
+                            en Verdanya.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="boton-nuevo-producto"
+                        class="boton boton-principal"
+                    >
+                        + Nuevo producto
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="lista-productos-admin"
+                    class="admin-tabla-contenedor"
+                >
+
+                    <div class="admin-cargando">
+                        Cargando productos...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         MODAL CATEGORÍA
+    ====================================================== -->
+
+    <div
+        id="modal-categoria"
+        class="modal-admin"
+        aria-hidden="true"
+    >
+
+        <div class="modal-admin-contenido">
+
+            <div class="modal-admin-cabecera">
+
+                <div>
+
+                    <span class="admin-seccion-etiqueta">
+                        CATEGORÍA
+                    </span>
+
+                    <h2 id="titulo-modal-categoria">
+                        Nueva categoría
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-cerrar"
+                    data-cerrar-modal="modal-categoria"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formulario-categoria">
+
+                <input
+                    type="hidden"
+                    id="categoria-id"
+                >
+
+
+                <div class="campo-admin">
+
+                    <label for="categoria-nombre">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="categoria-nombre"
+                        maxlength="100"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo-admin">
+
+                    <label for="categoria-descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="categoria-descripcion"
+                        rows="4"
+                        maxlength="500"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="campo-admin campo-checkbox">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="categoria-activa"
+                            checked
+                        >
+
+                        <span>
+                            Categoría activa
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="modal-admin-acciones">
+
+                    <button
+                        type="button"
+                        class="boton boton-secundario"
+                        data-cerrar-modal="modal-categoria"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="boton boton-principal"
+                    >
+                        Guardar categoría
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL PRODUCTO
+    ====================================================== -->
+
+    <div
+        id="modal-producto"
+        class="modal-admin"
+        aria-hidden="true"
+    >
+
+        <div class="modal-admin-contenido modal-producto-contenido">
+
+            <div class="modal-admin-cabecera">
+
+                <div>
+
+                    <span class="admin-seccion-etiqueta">
+                        PRODUCTO
+                    </span>
+
+                    <h2 id="titulo-modal-producto">
+                        Nuevo producto
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-cerrar"
+                    data-cerrar-modal="modal-producto"
+                    aria-label="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formulario-producto">
+
+                <input
+                    type="hidden"
+                    id="producto-id"
+                >
+
+
+                <div class="form-grid-admin">
+
+                    <div class="campo-admin">
+
+                        <label for="producto-nombre">
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            id="producto-nombre"
+                            maxlength="150"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo-admin">
+
+                        <label for="producto-slug">
+                            Slug
+                        </label>
+
+                        <input
+                            type="text"
+                            id="producto-slug"
+                            maxlength="180"
+                            placeholder="ejemplo-planta"
+                            required
+                        >
+
+                        <small>
+                            Se utiliza en la URL del producto.
+                        </small>
+
+                    </div>
+
+
+                    <div class="campo-admin">
+
+                        <label for="producto-precio">
+                            Precio
+                        </label>
+
+                        <input
+                            type="number"
+                            id="producto-precio"
+                            min="0"
+                            step="0.01"
+                            placeholder="450.00"
+                        >
+
+                    </div>
+
+
+                    <div class="campo-admin">
+
+                        <label for="producto-categoria">
+                            Categoría
+                        </label>
+
+                        <select
+                            id="producto-categoria"
+                            required
+                        >
+
+                            <option value="">
+                                Selecciona una categoría
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="campo-admin">
+
+                    <label for="producto-descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="producto-descripcion"
+                        rows="5"
+                        maxlength="2000"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-grid-admin">
+
+                    <div class="campo-admin campo-checkbox">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="producto-activo"
+                                checked
+                            >
+
+                            <span>
+                                Producto activo
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="campo-admin campo-checkbox">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="producto-destacado"
+                            >
+
+                            <span>
+                                Producto destacado
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="campo-admin">
+
+                    <label for="producto-imagen">
+                        Imagen principal
+                    </label>
+
+                    <input
+                        type="file"
+                        id="producto-imagen"
+                        accept="image/jpeg,image/png,image/webp"
+                    >
+
+                    <small>
+                        JPG, PNG o WebP. Máximo 5 MB.
+                    </small>
+
+                </div>
+
+
+                <div
+                    id="producto-imagen-actual"
+                    class="imagen-actual-admin"
+                ></div>
+
+
+                <div class="modal-admin-acciones">
+
+                    <button
+                        type="button"
+                        class="boton boton-secundario"
+                        data-cerrar-modal="modal-producto"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="boton boton-principal"
+                    >
+                        Guardar producto
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script src="js/config.js"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/admin.js"></script>
+
+</body>
+</html>

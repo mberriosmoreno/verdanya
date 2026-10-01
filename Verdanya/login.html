@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Acceso administrativo de Verdanya."
+    >
+
+    <title>Acceso administrativo | Verdanya</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/login.css"
+    >
+
+</head>
+
+<body class="pagina-login">
+
+    <!-- =====================================================
+         ENCABEZADO
+    ====================================================== -->
+
+    <header class="encabezado">
+
+        <div class="contenedor encabezado-contenido">
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="Verdanya - Inicio"
+            >
+                VERDANYA
+            </a>
+
+            <a
+                href="index.html"
+                class="boton boton-secundario boton-volver"
+            >
+                ← Volver a Verdanya
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="login-principal">
+
+        <section class="login-seccion">
+
+            <div class="login-tarjeta">
+
+                <div class="login-icono">
+                    🌿
+                </div>
+
+                <span class="login-etiqueta">
+                    ADMINISTRACIÓN
+                </span>
+
+                <h1>
+                    Bienvenido a Verdanya
+                </h1>
+
+                <p class="login-descripcion">
+                    Ingresa para administrar productos,
+                    categorías e imágenes de tu catálogo.
+                </p>
+
+
+                <!-- =================================================
+                     FORMULARIO
+                ================================================== -->
+
+                <form
+                    id="formulario-login"
+                    class="login-formulario"
+                >
+
+                    <div class="campo">
+
+                        <label for="correo">
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            type="email"
+                            id="correo"
+                            name="correo"
+                            placeholder="admin@verdanya.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="contrasena">
+                            Contraseña
+                        </label>
+
+                        <input
+                            type="password"
+                            id="contrasena"
+                            name="contrasena"
+                            placeholder="Ingresa tu contraseña"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div
+                        id="mensaje-login"
+                        class="mensaje-login"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <button
+                        type="submit"
+                        id="boton-login"
+                        class="boton boton-principal boton-login"
+                    >
+                        Ingresar
+                    </button>
+
+                </form>
+
+
+                <div class="login-pie">
+
+                    <a href="index.html">
+                        ← Regresar al sitio
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         PIE DE PÁGINA
+    ====================================================== -->
+
+    <footer class="pie-pagina">
+
+        <div class="contenedor pie-contenido">
+
+            <p class="pie-copy">
+                © <span id="anio-actual"></span>
+                Verdanya. Todos los derechos reservados.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script src="js/config.js"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

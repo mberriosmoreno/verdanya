@@ -1,0 +1,343 @@
+/* =========================================================
+   VERDANYA
+   LOGIN / ACCESO ADMINISTRATIVO
+========================================================= */
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.pagina-login {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.pagina-login .encabezado {
+    flex-shrink: 0;
+}
+
+.boton-volver {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+========================================================= */
+
+.login-principal {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 70px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--verde-muy-claro),
+            #ffffff
+        );
+}
+
+
+.login-seccion {
+    width: 100%;
+    max-width: 480px;
+}
+
+
+/* =========================================================
+   TARJETA
+========================================================= */
+
+.login-tarjeta {
+    padding: 50px 45px;
+
+    background: #ffffff;
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.08);
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ICONO
+========================================================= */
+
+.login-icono {
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--verde-muy-claro);
+
+    border-radius: 50%;
+
+    font-size: 2rem;
+}
+
+
+/* =========================================================
+   ETIQUETA
+========================================================= */
+
+.login-etiqueta {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: var(--verde-principal);
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.login-tarjeta h1 {
+    margin: 0 0 14px;
+
+    color: var(--verde-oscuro);
+
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+
+    line-height: 1.15;
+}
+
+
+/* =========================================================
+   DESCRIPCIÓN
+========================================================= */
+
+.login-descripcion {
+    max-width: 360px;
+
+    margin: 0 auto 32px;
+
+    color: var(--texto-secundario);
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+.login-formulario {
+    text-align: left;
+}
+
+
+.campo {
+    margin-bottom: 22px;
+}
+
+
+.campo label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--verde-oscuro);
+
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+
+.campo input {
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border: 1px solid #d9e2da;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: var(--texto-principal);
+
+    font-family: inherit;
+
+    font-size: 1rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.campo input::placeholder {
+    color: #a3ada6;
+}
+
+
+.campo input:focus {
+    border-color: var(--verde-principal);
+
+    box-shadow:
+        0 0 0 4px rgba(47, 125, 78, 0.10);
+}
+
+
+/* =========================================================
+   MENSAJES
+========================================================= */
+
+.mensaje-login {
+    display: none;
+
+    margin-bottom: 18px;
+
+    padding: 13px 15px;
+
+    border-radius: 12px;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+}
+
+
+.mensaje-login.visible {
+    display: block;
+}
+
+
+.mensaje-login.error {
+    background: #fff1f1;
+
+    border: 1px solid #f2cccc;
+
+    color: #a33a3a;
+}
+
+
+.mensaje-login.exito {
+    background: var(--verde-muy-claro);
+
+    border: 1px solid #c9dfce;
+
+    color: var(--verde-oscuro);
+}
+
+
+/* =========================================================
+   BOTÓN LOGIN
+========================================================= */
+
+.boton-login {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 4px;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+
+.boton-login:disabled {
+    opacity: 0.65;
+
+    cursor: wait;
+}
+
+
+/* =========================================================
+   PIE DEL LOGIN
+========================================================= */
+
+.login-pie {
+    margin-top: 28px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid #edf1ed;
+}
+
+
+.login-pie a {
+    color: var(--verde-principal);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.login-pie a:hover {
+    color: var(--verde-oscuro);
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .login-principal {
+        padding: 40px 16px;
+    }
+
+    .login-tarjeta {
+        padding: 38px 24px;
+
+        border-radius: 22px;
+    }
+
+    .boton-volver {
+        font-size: 0.85rem;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .pagina-login .encabezado-contenido {
+        gap: 12px;
+    }
+
+    .pagina-login .logo {
+        font-size: 1.1rem;
+    }
+
+    .boton-volver {
+        padding: 10px 13px;
+    }
+
+}

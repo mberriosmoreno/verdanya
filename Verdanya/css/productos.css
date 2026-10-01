@@ -1,0 +1,294 @@
+/* =========================================================
+   VERDANYA
+   CATÁLOGO DE PRODUCTOS
+========================================================= */
+
+
+/* =========================================================
+   ENCABEZADO DEL CATÁLOGO
+========================================================= */
+
+.catalogo-hero {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--verde-claro),
+            #ffffff
+        );
+
+    padding:
+        70px 0 60px;
+
+}
+
+
+.catalogo-hero h1 {
+
+    color:
+        var(--verde-oscuro);
+
+    font-size:
+        clamp(2.2rem, 5vw, 3.5rem);
+
+    line-height:
+        1.1;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.catalogo-hero p {
+
+    max-width:
+        650px;
+
+    color:
+        var(--gris-texto);
+
+    font-size:
+        1.05rem;
+
+}
+
+
+/* =========================================================
+   CATÁLOGO
+========================================================= */
+
+.catalogo {
+
+    padding:
+        55px 0 80px;
+
+    background:
+        var(--blanco);
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.filtros-productos {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        2fr 1fr;
+
+    gap:
+        20px;
+
+    margin-bottom:
+        30px;
+
+    padding:
+        24px;
+
+    background:
+        var(--gris-claro);
+
+    border:
+        1px solid var(--gris-borde);
+
+    border-radius:
+        var(--radio);
+
+}
+
+
+.campo-busqueda,
+.campo-filtro {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+}
+
+
+.campo-busqueda label,
+.campo-filtro label {
+
+    color:
+        var(--verde-oscuro);
+
+    font-weight:
+        700;
+
+    font-size:
+        0.9rem;
+
+}
+
+
+.campo-busqueda input,
+.campo-filtro select {
+
+    width:
+        100%;
+
+    min-height:
+        46px;
+
+    padding:
+        10px 14px;
+
+    background:
+        var(--blanco);
+
+    border:
+        1px solid var(--gris-borde);
+
+    border-radius:
+        8px;
+
+    color:
+        var(--negro);
+
+    outline:
+        none;
+
+}
+
+
+.campo-busqueda input:focus,
+.campo-filtro select:focus {
+
+    border-color:
+        var(--verde-principal);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(47, 107, 69, 0.12);
+
+}
+
+
+/* =========================================================
+   CONTADOR
+========================================================= */
+
+.contador-productos {
+
+    color:
+        var(--gris-texto);
+
+    font-size:
+        0.92rem;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+/* =========================================================
+   BOTÓN WHATSAPP
+========================================================= */
+
+.productos-acciones {
+
+    padding:
+        0 20px 20px;
+
+}
+
+
+.productos-acciones .boton-whatsapp {
+
+    width:
+        100%;
+
+}
+
+
+/* =========================================================
+   SIN RESULTADOS
+========================================================= */
+
+.sin-resultados {
+
+    grid-column:
+        1 / -1;
+
+    padding:
+        55px 25px;
+
+    text-align:
+        center;
+
+    border:
+        1px solid var(--gris-borde);
+
+    border-radius:
+        var(--radio);
+
+    background:
+        var(--gris-claro);
+
+}
+
+
+.sin-resultados h3 {
+
+    color:
+        var(--verde-oscuro);
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.sin-resultados p {
+
+    color:
+        var(--gris-texto);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .catalogo-hero {
+
+        padding:
+            55px 0 45px;
+
+    }
+
+
+    .catalogo {
+
+        padding:
+            40px 0 60px;
+
+    }
+
+
+    .filtros-productos {
+
+        grid-template-columns:
+            1fr;
+
+        padding:
+            18px;
+
+    }
+
+}
