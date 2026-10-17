@@ -6,6 +6,12 @@
 const BUCKET_IMAGENES = "Plantas";
 const MAX_TAMANO_IMAGEN = 5 * 1024 * 1024;
 
+const ESTATUS_COMERCIAL_DEFAULT = "Disponible";
+const ESTATUS_COMERCIAL_VALIDOS = [
+    "Disponible",
+    "Vendida"
+];
+
 let productoEditandoId = null;
 let categoriaEditandoId = null;
 
@@ -28,31 +34,37 @@ async function iniciarAdministracion() {
     const supabase = obtenerSupabase();
 
     if (!supabase) {
-
         mostrarMensajeAdmin(
             "No se pudo conectar con Supabase.",
             "error"
         );
-
         return;
     }
-
 
     const {
-        data: { session }
+        data: { session },
+        error
     } = await supabase.auth.getSession();
 
+    if (error) {
+        console.error(
+            "Error verificando la sesión:",
+            error
+        );
 
-    if (!session) {
-
-        window.location.href = "login.html";
-
+        mostrarMensajeAdmin(
+            "No se pudo verificar la sesión administrativa.",
+            "error"
+        );
         return;
     }
 
+    if (!session) {
+        window.location.href = "login.html";
+        return;
+    }
 
     mostrarUsuario(session);
-
     configurarEventos();
 
     await cargarDatosAdministracion();
@@ -70,7 +82,6 @@ function mostrarUsuario(session) {
 
     if (!elemento) return;
 
-
     elemento.textContent =
         session.user.email || "Usuario autenticado";
 }
@@ -84,82 +95,45 @@ function configurarEventos() {
 
     document
         .getElementById("boton-cerrar-sesion")
-        ?.addEventListener(
-            "click",
-            cerrarSesion
-        );
-
+        ?.addEventListener("click", cerrarSesion);
 
     document
         .getElementById("boton-nueva-categoria")
-        ?.addEventListener(
-            "click",
-            abrirNuevaCategoria
-        );
-
+        ?.addEventListener("click", abrirNuevaCategoria);
 
     document
         .getElementById("boton-nuevo-producto")
-        ?.addEventListener(
-            "click",
-            abrirNuevoProducto
-        );
-
+        ?.addEventListener("click", abrirNuevoProducto);
 
     document
         .getElementById("formulario-categoria")
-        ?.addEventListener(
-            "submit",
-            guardarCategoria
-        );
-
+        ?.addEventListener("submit", guardarCategoria);
 
     document
         .getElementById("formulario-producto")
-        ?.addEventListener(
-            "submit",
-            guardarProducto
-        );
-
+        ?.addEventListener("submit", guardarProducto);
 
     document
         .querySelectorAll("[data-cerrar-modal]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    cerrarModal(
-                        boton.dataset.cerrarModal
-                    );
-
-                }
-            );
+            boton.addEventListener("click", () => {
+                cerrarModal(boton.dataset.cerrarModal);
+            });
 
         });
-
 
     document
         .querySelectorAll(".modal-admin")
         .forEach(modal => {
 
-            modal.addEventListener(
-                "click",
-                evento => {
+            modal.addEventListener("click", evento => {
 
-                    if (
-                        evento.target === modal
-                    ) {
-
-                        cerrarModal(
-                            modal.id
-                        );
-
-                    }
-
+                if (evento.target === modal) {
+                    cerrarModal(modal.id);
                 }
-            );
+
+            });
 
         });
 }
@@ -172,11 +146,9 @@ function configurarEventos() {
 async function cargarDatosAdministracion() {
 
     await cargarCategoriasAdmin();
-
     await cargarProductosAdmin();
 
     actualizarResumen();
-
     llenarSelectCategorias();
 }
 
@@ -194,26 +166,20 @@ async function cargarCategoriasAdmin() {
             "lista-categorias-admin"
         );
 
-
     if (!contenedor) return;
 
-
-    contenedor.innerHTML =
-        `<div class="admin-cargando">
+    contenedor.innerHTML = `
+        <div class="admin-cargando">
             Cargando categorías...
-        </div>`;
+        </div>
+    `;
 
-
-    const {
-        data,
-        error
-    } = await supabase
+    const { data, error } = await supabase
         .from("categorias")
         .select("*")
         .order("nombre", {
             ascending: true
         });
-
 
     if (error) {
 
@@ -222,15 +188,14 @@ async function cargarCategoriasAdmin() {
             error
         );
 
-
-        contenedor.innerHTML =
-            `<div class="admin-error">
+        contenedor.innerHTML = `
+            <div class="admin-error">
                 No se pudieron cargar las categorías.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
-
 
     categoriasAdminCache = data || [];
 
@@ -245,47 +210,33 @@ function renderizarCategoriasAdmin() {
             "lista-categorias-admin"
         );
 
-
     if (!contenedor) return;
-
 
     if (!categoriasAdminCache.length) {
 
-        contenedor.innerHTML =
-            `<div class="admin-vacio">
+        contenedor.innerHTML = `
+            <div class="admin-vacio">
                 No hay categorías registradas.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
 
-
     contenedor.innerHTML = `
-
         <table class="admin-tabla">
-
             <thead>
-
                 <tr>
-
                     <th>Nombre</th>
-
                     <th>Descripción</th>
-
                     <th>Estado</th>
-
                     <th>Acciones</th>
-
                 </tr>
-
             </thead>
 
             <tbody>
-
                 ${categoriasAdminCache.map(categoria => `
-
                     <tr>
-
                         <td>
                             <strong class="admin-producto-nombre">
                                 ${escaparHTML(categoria.nombre)}
@@ -299,25 +250,20 @@ function renderizarCategoriasAdmin() {
                         </td>
 
                         <td>
-
                             <span class="admin-estado ${
                                 categoria.activo
                                     ? "activo"
                                     : "inactivo"
                             }">
-
                                 ${
                                     categoria.activo
                                         ? "Activa"
                                         : "Inactiva"
                                 }
-
                             </span>
-
                         </td>
 
                         <td>
-
                             <div class="admin-acciones">
 
                                 <button
@@ -349,81 +295,46 @@ function renderizarCategoriasAdmin() {
                                 </button>
 
                             </div>
-
                         </td>
-
                     </tr>
-
                 `).join("")}
-
             </tbody>
-
         </table>
     `;
 
-
     contenedor
-        .querySelectorAll(
-            "[data-editar-categoria]"
-        )
+        .querySelectorAll("[data-editar-categoria]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    editarCategoria(
-                        Number(
-                            boton.dataset.editarCategoria
-                        )
-                    );
-
-                }
-            );
+            boton.addEventListener("click", () => {
+                editarCategoria(
+                    Number(boton.dataset.editarCategoria)
+                );
+            });
 
         });
 
-
     contenedor
-        .querySelectorAll(
-            "[data-toggle-categoria]"
-        )
+        .querySelectorAll("[data-toggle-categoria]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    cambiarEstadoCategoria(
-                        Number(
-                            boton.dataset.toggleCategoria
-                        )
-                    );
-
-                }
-            );
+            boton.addEventListener("click", () => {
+                cambiarEstadoCategoria(
+                    Number(boton.dataset.toggleCategoria)
+                );
+            });
 
         });
 
-
     contenedor
-        .querySelectorAll(
-            "[data-eliminar-categoria]"
-        )
+        .querySelectorAll("[data-eliminar-categoria]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    eliminarCategoria(
-                        Number(
-                            boton.dataset.eliminarCategoria
-                        )
-                    );
-
-                }
-            );
+            boton.addEventListener("click", () => {
+                eliminarCategoria(
+                    Number(boton.dataset.eliminarCategoria)
+                );
+            });
 
         });
 }
@@ -437,34 +348,21 @@ function abrirNuevaCategoria() {
 
     categoriaEditandoId = null;
 
+    document.getElementById(
+        "titulo-modal-categoria"
+    ).textContent = "Nueva categoría";
 
-    document
-        .getElementById(
-            "titulo-modal-categoria"
-        )
-        .textContent = "Nueva categoría";
+    document.getElementById(
+        "formulario-categoria"
+    ).reset();
 
+    document.getElementById(
+        "categoria-activa"
+    ).checked = true;
 
-    document
-        .getElementById(
-            "formulario-categoria"
-        )
-        .reset();
-
-
-    document
-        .getElementById(
-            "categoria-activa"
-        )
-        .checked = true;
-
-
-    document
-        .getElementById(
-            "categoria-id"
-        )
-        .value = "";
-
+    document.getElementById(
+        "categoria-id"
+    ).value = "";
 
     abrirModal("modal-categoria");
 }
@@ -481,49 +379,29 @@ function editarCategoria(id) {
             item => item.id === id
         );
 
-
     if (!categoria) return;
-
 
     categoriaEditandoId = id;
 
+    document.getElementById(
+        "titulo-modal-categoria"
+    ).textContent = "Editar categoría";
 
-    document
-        .getElementById(
-            "titulo-modal-categoria"
-        )
-        .textContent = "Editar categoría";
+    document.getElementById(
+        "categoria-id"
+    ).value = categoria.id;
 
+    document.getElementById(
+        "categoria-nombre"
+    ).value = categoria.nombre || "";
 
-    document
-        .getElementById(
-            "categoria-id"
-        )
-        .value = categoria.id;
+    document.getElementById(
+        "categoria-descripcion"
+    ).value = categoria.descripcion || "";
 
-
-    document
-        .getElementById(
-            "categoria-nombre"
-        )
-        .value = categoria.nombre || "";
-
-
-    document
-        .getElementById(
-            "categoria-descripcion"
-        )
-        .value = categoria.descripcion || "";
-
-
-    document
-        .getElementById(
-            "categoria-activa"
-        )
-        .checked = Boolean(
-            categoria.activo
-        );
-
+    document.getElementById(
+        "categoria-activa"
+    ).checked = Boolean(categoria.activo);
 
     abrirModal("modal-categoria");
 }
@@ -537,35 +415,21 @@ async function guardarCategoria(evento) {
 
     evento.preventDefault();
 
-
     const supabase = obtenerSupabase();
 
+    const nombre = document
+        .getElementById("categoria-nombre")
+        .value
+        .trim();
 
-    const nombre =
-        document
-            .getElementById(
-                "categoria-nombre"
-            )
-            .value
-            .trim();
+    const descripcion = document
+        .getElementById("categoria-descripcion")
+        .value
+        .trim();
 
-
-    const descripcion =
-        document
-            .getElementById(
-                "categoria-descripcion"
-            )
-            .value
-            .trim();
-
-
-    const activo =
-        document
-            .getElementById(
-                "categoria-activa"
-            )
-            .checked;
-
+    const activo = document
+        .getElementById("categoria-activa")
+        .checked;
 
     if (!nombre) {
 
@@ -577,21 +441,13 @@ async function guardarCategoria(evento) {
         return;
     }
 
-
     const datos = {
-
         nombre,
-
-        descripcion:
-            descripcion || null,
-
+        descripcion: descripcion || null,
         activo
-
     };
 
-
     let resultado;
-
 
     if (categoriaEditandoId) {
 
@@ -608,14 +464,12 @@ async function guardarCategoria(evento) {
 
     }
 
-
     if (resultado.error) {
 
         console.error(
             "Error guardando categoría:",
             resultado.error
         );
-
 
         mostrarMensajeAdmin(
             traducirErrorAdmin(
@@ -628,20 +482,18 @@ async function guardarCategoria(evento) {
         return;
     }
 
+    const estabaEditando = Boolean(categoriaEditandoId);
 
     cerrarModal("modal-categoria");
 
+    categoriaEditandoId = null;
 
     mostrarMensajeAdmin(
-        categoriaEditandoId
+        estabaEditando
             ? "Categoría actualizada correctamente."
             : "Categoría creada correctamente.",
         "exito"
     );
-
-
-    categoriaEditandoId = null;
-
 
     await cargarDatosAdministracion();
 }
@@ -658,21 +510,16 @@ async function cambiarEstadoCategoria(id) {
             item => item.id === id
         );
 
-
     if (!categoria) return;
-
 
     const supabase = obtenerSupabase();
 
-
-    const { error } =
-        await supabase
-            .from("categorias")
-            .update({
-                activo: !categoria.activo
-            })
-            .eq("id", id);
-
+    const { error } = await supabase
+        .from("categorias")
+        .update({
+            activo: !categoria.activo
+        })
+        .eq("id", id);
 
     if (error) {
 
@@ -687,14 +534,12 @@ async function cambiarEstadoCategoria(id) {
         return;
     }
 
-
     mostrarMensajeAdmin(
         categoria.activo
             ? "Categoría desactivada."
             : "Categoría activada.",
         "exito"
     );
-
 
     await cargarDatosAdministracion();
 }
@@ -711,29 +556,21 @@ async function eliminarCategoria(id) {
             item => item.id === id
         );
 
-
     if (!categoria) return;
 
-
-    const confirmar =
-        confirm(
-            `¿Eliminar la categoría "${categoria.nombre}"?\n\n` +
-            `Solo será posible si no existen productos asociados.`
-        );
-
+    const confirmar = confirm(
+        `¿Eliminar la categoría "${categoria.nombre}"?\n\n` +
+        "Solo será posible si no existen productos asociados."
+    );
 
     if (!confirmar) return;
 
-
     const supabase = obtenerSupabase();
 
-
-    const { error } =
-        await supabase
-            .from("categorias")
-            .delete()
-            .eq("id", id);
-
+    const { error } = await supabase
+        .from("categorias")
+        .delete()
+        .eq("id", id);
 
     if (error) {
 
@@ -741,7 +578,6 @@ async function eliminarCategoria(id) {
             "Error eliminando categoría:",
             error
         );
-
 
         mostrarMensajeAdmin(
             "No se pudo eliminar la categoría. " +
@@ -752,12 +588,10 @@ async function eliminarCategoria(id) {
         return;
     }
 
-
     mostrarMensajeAdmin(
         "Categoría eliminada correctamente.",
         "exito"
     );
-
 
     await cargarDatosAdministracion();
 }
@@ -771,26 +605,20 @@ async function cargarProductosAdmin() {
 
     const supabase = obtenerSupabase();
 
-
     const contenedor =
         document.getElementById(
             "lista-productos-admin"
         );
 
-
     if (!contenedor) return;
 
-
-    contenedor.innerHTML =
-        `<div class="admin-cargando">
+    contenedor.innerHTML = `
+        <div class="admin-cargando">
             Cargando productos...
-        </div>`;
+        </div>
+    `;
 
-
-    const {
-        data,
-        error
-    } = await supabase
+    const { data, error } = await supabase
         .from("productos")
         .select(`
             *,
@@ -802,7 +630,6 @@ async function cargarProductosAdmin() {
             ascending: false
         });
 
-
     if (error) {
 
         console.error(
@@ -810,21 +637,60 @@ async function cargarProductosAdmin() {
             error
         );
 
-
-        contenedor.innerHTML =
-            `<div class="admin-error">
+        contenedor.innerHTML = `
+            <div class="admin-error">
                 No se pudieron cargar los productos.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
-
 
     productosAdminCache = data || [];
 
     renderizarProductosAdmin();
 }
 
+
+/* =========================================================
+   ESTATUS COMERCIAL
+========================================================= */
+
+function obtenerEstatusComercial(producto) {
+
+    const estatus = producto?.estatus_comercial;
+
+    if (
+        ESTATUS_COMERCIAL_VALIDOS.includes(estatus)
+    ) {
+        return estatus;
+    }
+
+    // Compatibilidad con productos anteriores.
+    return ESTATUS_COMERCIAL_DEFAULT;
+}
+
+
+function renderizarEstatusComercial(producto) {
+
+    const estatus = obtenerEstatusComercial(producto);
+
+    const clase =
+        estatus === "Vendida"
+            ? "vendida"
+            : "disponible";
+
+    return `
+        <span class="admin-estado ${clase}">
+            ${estatus}
+        </span>
+    `;
+}
+
+
+/* =========================================================
+   MOSTRAR PRODUCTOS
+========================================================= */
 
 function renderizarProductosAdmin() {
 
@@ -833,51 +699,36 @@ function renderizarProductosAdmin() {
             "lista-productos-admin"
         );
 
-
     if (!contenedor) return;
-
 
     if (!productosAdminCache.length) {
 
-        contenedor.innerHTML =
-            `<div class="admin-vacio">
+        contenedor.innerHTML = `
+            <div class="admin-vacio">
                 No hay productos registrados.
-            </div>`;
+            </div>
+        `;
 
         return;
     }
 
-
     contenedor.innerHTML = `
-
         <table class="admin-tabla">
-
             <thead>
-
                 <tr>
-
                     <th>Producto</th>
-
                     <th>Categoría</th>
-
                     <th>Precio</th>
-
-                    <th>Estado</th>
-
+                    <th>Estado administrativo</th>
+                    <th>Estatus comercial</th>
                     <th>Acciones</th>
-
                 </tr>
-
             </thead>
 
             <tbody>
-
                 ${productosAdminCache.map(producto => `
-
                     <tr>
-
                         <td>
-
                             <strong class="admin-producto-nombre">
                                 ${escaparHTML(producto.nombre)}
                             </strong>
@@ -885,7 +736,6 @@ function renderizarProductosAdmin() {
                             <span class="admin-producto-slug">
                                 /${escaparHTML(producto.slug)}
                             </span>
-
                         </td>
 
                         <td>
@@ -900,19 +750,16 @@ function renderizarProductosAdmin() {
                         </td>
 
                         <td>
-
                             <span class="admin-estado ${
                                 producto.activo
                                     ? "activo"
                                     : "inactivo"
                             }">
-
                                 ${
                                     producto.activo
                                         ? "Activo"
                                         : "Inactivo"
                                 }
-
                             </span>
 
                             ${
@@ -921,14 +768,16 @@ function renderizarProductosAdmin() {
                                         <span class="admin-estado destacado">
                                             Destacado
                                         </span>
-                                      `
+                                    `
                                     : ""
                             }
-
                         </td>
 
                         <td>
+                            ${renderizarEstatusComercial(producto)}
+                        </td>
 
+                        <td>
                             <div class="admin-acciones">
 
                                 <button
@@ -953,6 +802,19 @@ function renderizarProductosAdmin() {
 
                                 <button
                                     type="button"
+                                    class="admin-accion"
+                                    data-toggle-comercial="${producto.id}"
+                                >
+                                    ${
+                                        obtenerEstatusComercial(producto) ===
+                                        "Disponible"
+                                            ? "Marcar vendida"
+                                            : "Marcar disponible"
+                                    }
+                                </button>
+
+                                <button
+                                    type="button"
                                     class="admin-accion eliminar"
                                     data-eliminar-producto="${producto.id}"
                                 >
@@ -960,81 +822,58 @@ function renderizarProductosAdmin() {
                                 </button>
 
                             </div>
-
                         </td>
-
                     </tr>
-
                 `).join("")}
-
             </tbody>
-
         </table>
     `;
 
-
     contenedor
-        .querySelectorAll(
-            "[data-editar-producto]"
-        )
+        .querySelectorAll("[data-editar-producto]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    editarProducto(
-                        Number(
-                            boton.dataset.editarProducto
-                        )
-                    );
-
-                }
-            );
+            boton.addEventListener("click", () => {
+                editarProducto(
+                    Number(boton.dataset.editarProducto)
+                );
+            });
 
         });
 
-
     contenedor
-        .querySelectorAll(
-            "[data-toggle-producto]"
-        )
+        .querySelectorAll("[data-toggle-producto]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    cambiarEstadoProducto(
-                        Number(
-                            boton.dataset.toggleProducto
-                        )
-                    );
-
-                }
-            );
+            boton.addEventListener("click", () => {
+                cambiarEstadoProducto(
+                    Number(boton.dataset.toggleProducto)
+                );
+            });
 
         });
 
-
     contenedor
-        .querySelectorAll(
-            "[data-eliminar-producto]"
-        )
+        .querySelectorAll("[data-toggle-comercial]")
         .forEach(boton => {
 
-            boton.addEventListener(
-                "click",
-                () => {
+            boton.addEventListener("click", () => {
+                cambiarEstatusComercial(
+                    Number(boton.dataset.toggleComercial)
+                );
+            });
 
-                    eliminarProducto(
-                        Number(
-                            boton.dataset.eliminarProducto
-                        )
-                    );
+        });
 
-                }
-            );
+    contenedor
+        .querySelectorAll("[data-eliminar-producto]")
+        .forEach(boton => {
+
+            boton.addEventListener("click", () => {
+                eliminarProducto(
+                    Number(boton.dataset.eliminarProducto)
+                );
+            });
 
         });
 }
@@ -1048,51 +887,39 @@ function abrirNuevoProducto() {
 
     productoEditandoId = null;
 
+    document.getElementById(
+        "titulo-modal-producto"
+    ).textContent = "Nuevo producto";
 
-    document
-        .getElementById(
-            "titulo-modal-producto"
-        )
-        .textContent = "Nuevo producto";
+    document.getElementById(
+        "formulario-producto"
+    ).reset();
 
+    document.getElementById(
+        "producto-id"
+    ).value = "";
 
-    document
-        .getElementById(
-            "formulario-producto"
-        )
-        .reset();
+    document.getElementById(
+        "producto-activo"
+    ).checked = true;
 
+    document.getElementById(
+        "producto-destacado"
+    ).checked = false;
 
-    document
-        .getElementById(
-            "producto-id"
-        )
-        .value = "";
+    document.getElementById(
+        "producto-estatus-comercial"
+    ).value = ESTATUS_COMERCIAL_DEFAULT;
 
+    document.getElementById(
+        "producto-imagen-actual"
+    ).innerHTML = "";
 
-    document
-        .getElementById(
-            "producto-activo"
-        )
-        .checked = true;
-
-
-    document
-        .getElementById(
-            "producto-destacado"
-        )
-        .checked = false;
-
-
-    document
-        .getElementById(
-            "producto-imagen-actual"
-        )
-        .innerHTML = "";
-
+    document.getElementById(
+        "producto-imagen"
+    ).value = "";
 
     llenarSelectCategorias();
-
 
     abrirModal("modal-producto");
 }
@@ -1109,97 +936,61 @@ function editarProducto(id) {
             item => item.id === id
         );
 
-
     if (!producto) return;
-
 
     productoEditandoId = id;
 
+    document.getElementById(
+        "titulo-modal-producto"
+    ).textContent = "Editar producto";
 
-    document
-        .getElementById(
-            "titulo-modal-producto"
-        )
-        .textContent = "Editar producto";
+    document.getElementById(
+        "producto-id"
+    ).value = producto.id;
 
+    document.getElementById(
+        "producto-nombre"
+    ).value = producto.nombre || "";
 
-    document
-        .getElementById(
-            "producto-id"
-        )
-        .value = producto.id;
+    document.getElementById(
+        "producto-slug"
+    ).value = producto.slug || "";
 
-
-    document
-        .getElementById(
-            "producto-nombre"
-        )
-        .value = producto.nombre || "";
-
-
-    document
-        .getElementById(
-            "producto-slug"
-        )
-        .value = producto.slug || "";
-
-
-    document
-        .getElementById(
-            "producto-precio"
-        )
-        .value =
-            producto.precio ?? "";
-
+    document.getElementById(
+        "producto-precio"
+    ).value = producto.precio ?? "";
 
     llenarSelectCategorias();
 
+    document.getElementById(
+        "producto-categoria"
+    ).value = producto.categoria_id || "";
 
-    document
-        .getElementById(
-            "producto-categoria"
-        )
-        .value =
-            producto.categoria_id || "";
+    document.getElementById(
+        "producto-descripcion"
+    ).value = producto.descripcion || "";
 
+    document.getElementById(
+        "producto-activo"
+    ).checked = Boolean(producto.activo);
 
-    document
-        .getElementById(
-            "producto-descripcion"
-        )
-        .value =
-            producto.descripcion || "";
+    document.getElementById(
+        "producto-destacado"
+    ).checked = Boolean(producto.destacado);
 
-
-    document
-        .getElementById(
-            "producto-activo"
-        )
-        .checked =
-            Boolean(producto.activo);
-
-
-    document
-        .getElementById(
-            "producto-destacado"
-        )
-        .checked =
-            Boolean(producto.destacado);
-
+    document.getElementById(
+        "producto-estatus-comercial"
+    ).value = obtenerEstatusComercial(producto);
 
     const imagenActual =
         document.getElementById(
             "producto-imagen-actual"
         );
 
-
     if (producto.imagen_principal) {
 
         imagenActual.innerHTML = `
-
-            <p>
-                Imagen actual:
-            </p>
+            <p>Imagen actual:</p>
 
             <img
                 src="${escaparAtributo(
@@ -1209,21 +1000,17 @@ function editarProducto(id) {
                     producto.nombre
                 )}"
             >
-
         `;
 
     } else {
 
         imagenActual.innerHTML = "";
+
     }
 
-
-    document
-        .getElementById(
-            "producto-imagen"
-        )
-        .value = "";
-
+    document.getElementById(
+        "producto-imagen"
+    ).value = "";
 
     abrirModal("modal-producto");
 }
@@ -1240,15 +1027,11 @@ function llenarSelectCategorias() {
             "producto-categoria"
         );
 
-
     if (!select) return;
-
 
     const valorActual = select.value;
 
-
     select.innerHTML = `
-
         <option value="">
             Selecciona una categoría
         </option>
@@ -1256,20 +1039,14 @@ function llenarSelectCategorias() {
         ${categoriasAdminCache
             .filter(categoria => categoria.activo)
             .map(categoria => `
-
                 <option value="${categoria.id}">
                     ${escaparHTML(categoria.nombre)}
                 </option>
-
             `)
-            .join("")
-        }
-
+            .join("")}
     `;
 
-
     if (valorActual) {
-
         select.value = valorActual;
     }
 }
@@ -1283,76 +1060,46 @@ async function guardarProducto(evento) {
 
     evento.preventDefault();
 
-
     const supabase = obtenerSupabase();
 
+    const nombre = document
+        .getElementById("producto-nombre")
+        .value
+        .trim();
 
-    const nombre =
-        document
-            .getElementById(
-                "producto-nombre"
-            )
-            .value
-            .trim();
+    const slug = document
+        .getElementById("producto-slug")
+        .value
+        .trim();
 
+    const precioValor = document
+        .getElementById("producto-precio")
+        .value;
 
-    const slug =
-        document
-            .getElementById(
-                "producto-slug"
-            )
-            .value
-            .trim();
+    const categoriaId = document
+        .getElementById("producto-categoria")
+        .value;
 
+    const descripcion = document
+        .getElementById("producto-descripcion")
+        .value
+        .trim();
 
-    const precioValor =
-        document
-            .getElementById(
-                "producto-precio"
-            )
-            .value;
+    const activo = document
+        .getElementById("producto-activo")
+        .checked;
 
+    const destacado = document
+        .getElementById("producto-destacado")
+        .checked;
 
-    const categoriaId =
-        document
-            .getElementById(
-                "producto-categoria"
-            )
-            .value;
+    const estatusComercial = document
+        .getElementById("producto-estatus-comercial")
+        .value;
 
-
-    const descripcion =
-        document
-            .getElementById(
-                "producto-descripcion"
-            )
-            .value
-            .trim();
-
-
-    const activo =
-        document
-            .getElementById(
-                "producto-activo"
-            )
-            .checked;
-
-
-    const destacado =
-        document
-            .getElementById(
-                "producto-destacado"
-            )
-            .checked;
-
-
-    const archivo =
-        document
-            .getElementById(
-                "producto-imagen"
-            )
-            .files[0];
-
+    const archivo = document
+        .getElementById("producto-imagen")
+        .files[0];
 
     if (!nombre || !slug || !categoriaId) {
 
@@ -1364,27 +1111,39 @@ async function guardarProducto(evento) {
         return;
     }
 
-
     if (
         precioValor !== "" &&
-        Number(precioValor) < 0
+        (
+            !Number.isFinite(Number(precioValor)) ||
+            Number(precioValor) < 0
+        )
     ) {
 
         mostrarMensajeAdmin(
-            "El precio no puede ser negativo.",
+            "Ingresa un precio válido que no sea negativo.",
             "error"
         );
 
         return;
     }
 
+    if (
+        !ESTATUS_COMERCIAL_VALIDOS.includes(
+            estatusComercial
+        )
+    ) {
+
+        mostrarMensajeAdmin(
+            "Selecciona un estatus comercial válido.",
+            "error"
+        );
+
+        return;
+    }
 
     if (archivo) {
 
-        if (
-            archivo.size >
-            MAX_TAMANO_IMAGEN
-        ) {
+        if (archivo.size > MAX_TAMANO_IMAGEN) {
 
             mostrarMensajeAdmin(
                 "La imagen no puede superar los 5 MB.",
@@ -1394,19 +1153,13 @@ async function guardarProducto(evento) {
             return;
         }
 
-
         const tiposPermitidos = [
             "image/jpeg",
             "image/png",
             "image/webp"
         ];
 
-
-        if (
-            !tiposPermitidos.includes(
-                archivo.type
-            )
-        ) {
+        if (!tiposPermitidos.includes(archivo.type)) {
 
             mostrarMensajeAdmin(
                 "La imagen debe ser JPG, PNG o WebP.",
@@ -1417,46 +1170,34 @@ async function guardarProducto(evento) {
         }
     }
 
-
     const datos = {
-
         nombre,
-
         slug,
-
-        descripcion:
-            descripcion || null,
+        descripcion: descripcion || null,
 
         precio:
             precioValor === ""
                 ? null
                 : Number(precioValor),
 
-        categoria_id:
-            Number(categoriaId),
-
+        categoria_id: Number(categoriaId),
         activo,
+        destacado,
 
-        destacado
-
+        // Nuevo campo comercial guardado en Supabase.
+        estatus_comercial: estatusComercial
     };
 
+    let productoId = productoEditandoId;
 
-    let productoId =
-        productoEditandoId;
+    const estabaEditando = Boolean(productoEditandoId);
 
+    if (estabaEditando) {
 
-    if (productoEditandoId) {
-
-        const { error } =
-            await supabase
-                .from("productos")
-                .update(datos)
-                .eq(
-                    "id",
-                    productoEditandoId
-                );
-
+        const { error } = await supabase
+            .from("productos")
+            .update(datos)
+            .eq("id", productoEditandoId);
 
         if (error) {
 
@@ -1464,7 +1205,6 @@ async function guardarProducto(evento) {
                 "Error actualizando producto:",
                 error
             );
-
 
             mostrarMensajeAdmin(
                 traducirErrorAdmin(
@@ -1479,15 +1219,11 @@ async function guardarProducto(evento) {
 
     } else {
 
-        const {
-            data,
-            error
-        } = await supabase
+        const { data, error } = await supabase
             .from("productos")
             .insert(datos)
             .select("id")
             .single();
-
 
         if (error) {
 
@@ -1495,7 +1231,6 @@ async function guardarProducto(evento) {
                 "Error creando producto:",
                 error
             );
-
 
             mostrarMensajeAdmin(
                 traducirErrorAdmin(
@@ -1508,43 +1243,31 @@ async function guardarProducto(evento) {
             return;
         }
 
-
         productoId = data.id;
     }
 
-
     /*
-     * Si el usuario seleccionó una imagen,
-     * la subimos después de guardar el producto.
+     * Si se seleccionó una imagen, se sube
+     * después de guardar el producto.
      */
 
     if (archivo && productoId) {
 
-        const urlImagen =
-            await subirImagenProducto(
-                archivo,
-                productoId
-            );
-
+        const urlImagen = await subirImagenProducto(
+            archivo,
+            productoId
+        );
 
         if (!urlImagen) {
-
             return;
         }
 
-
-        const {
-            error: errorImagen
-        } = await supabase
+        const { error: errorImagen } = await supabase
             .from("productos")
             .update({
                 imagen_principal: urlImagen
             })
-            .eq(
-                "id",
-                productoId
-            );
-
+            .eq("id", productoId);
 
         if (errorImagen) {
 
@@ -1553,29 +1276,88 @@ async function guardarProducto(evento) {
                 errorImagen
             );
 
-
             mostrarMensajeAdmin(
                 "El producto se guardó, pero no se pudo asociar la imagen.",
                 "error"
             );
 
+            return;
         }
     }
 
-
     cerrarModal("modal-producto");
 
+    productoEditandoId = null;
 
     mostrarMensajeAdmin(
-        productoEditandoId
+        estabaEditando
             ? "Producto actualizado correctamente."
             : "Producto creado correctamente.",
         "exito"
     );
 
+    await cargarDatosAdministracion();
+}
 
-    productoEditandoId = null;
 
+/* =========================================================
+   CAMBIAR ESTATUS COMERCIAL RÁPIDAMENTE
+========================================================= */
+
+async function cambiarEstatusComercial(id) {
+
+    const producto =
+        productosAdminCache.find(
+            item => item.id === id
+        );
+
+    if (!producto) return;
+
+    const estatusActual =
+        obtenerEstatusComercial(producto);
+
+    const nuevoEstatus =
+        estatusActual === "Disponible"
+            ? "Vendida"
+            : "Disponible";
+
+    const confirmar = confirm(
+        `¿Cambiar "${producto.nombre}" a "${nuevoEstatus}"?`
+    );
+
+    if (!confirmar) return;
+
+    const supabase = obtenerSupabase();
+
+    const { error } = await supabase
+        .from("productos")
+        .update({
+            estatus_comercial: nuevoEstatus
+        })
+        .eq("id", id);
+
+    if (error) {
+
+        console.error(
+            "Error cambiando el estatus comercial:",
+            error
+        );
+
+        mostrarMensajeAdmin(
+            traducirErrorAdmin(
+                error,
+                "No se pudo actualizar el estatus comercial."
+            ),
+            "error"
+        );
+
+        return;
+    }
+
+    mostrarMensajeAdmin(
+        `"${producto.nombre}" ahora figura como "${nuevoEstatus}".`,
+        "exito"
+    );
 
     await cargarDatosAdministracion();
 }
@@ -1592,24 +1374,17 @@ async function subirImagenProducto(
 
     const supabase = obtenerSupabase();
 
-
-    const extension =
-        obtenerExtensionImagen(
-            archivo.name
-        );
-
+    const extension = obtenerExtensionImagen(
+        archivo.name
+    );
 
     const nombreArchivo =
         `${crypto.randomUUID()}.${extension}`;
 
-
     const ruta =
         `productos/${productoId}/${nombreArchivo}`;
 
-
-    const {
-        error
-    } = await supabase
+    const { error } = await supabase
         .storage
         .from(BUCKET_IMAGENES)
         .upload(
@@ -1622,7 +1397,6 @@ async function subirImagenProducto(
             }
         );
 
-
     if (error) {
 
         console.error(
@@ -1630,30 +1404,25 @@ async function subirImagenProducto(
             error
         );
 
-
         mostrarMensajeAdmin(
-            "No se pudo subir la imagen.",
+            "El producto se guardó, pero no se pudo subir la imagen.",
             "error"
         );
 
         return null;
     }
 
-
-    const {
-        data
-    } = supabase
+    const { data } = supabase
         .storage
         .from(BUCKET_IMAGENES)
         .getPublicUrl(ruta);
-
 
     return data.publicUrl;
 }
 
 
 /* =========================================================
-   CAMBIAR ESTADO PRODUCTO
+   CAMBIAR ESTADO ADMINISTRATIVO DEL PRODUCTO
 ========================================================= */
 
 async function cambiarEstadoProducto(id) {
@@ -1663,21 +1432,16 @@ async function cambiarEstadoProducto(id) {
             item => item.id === id
         );
 
-
     if (!producto) return;
-
 
     const supabase = obtenerSupabase();
 
-
-    const { error } =
-        await supabase
-            .from("productos")
-            .update({
-                activo: !producto.activo
-            })
-            .eq("id", id);
-
+    const { error } = await supabase
+        .from("productos")
+        .update({
+            activo: !producto.activo
+        })
+        .eq("id", id);
 
     if (error) {
 
@@ -1692,14 +1456,12 @@ async function cambiarEstadoProducto(id) {
         return;
     }
 
-
     mostrarMensajeAdmin(
         producto.activo
             ? "Producto desactivado."
             : "Producto activado.",
         "exito"
     );
-
 
     await cargarDatosAdministracion();
 }
@@ -1716,29 +1478,21 @@ async function eliminarProducto(id) {
             item => item.id === id
         );
 
-
     if (!producto) return;
 
-
-    const confirmar =
-        confirm(
-            `¿Eliminar "${producto.nombre}"?\n\n` +
-            `Esta acción eliminará el producto del catálogo.`
-        );
-
+    const confirmar = confirm(
+        `¿Eliminar "${producto.nombre}"?\n\n` +
+        "Esta acción eliminará el producto del catálogo."
+    );
 
     if (!confirmar) return;
 
-
     const supabase = obtenerSupabase();
 
-
-    const { error } =
-        await supabase
-            .from("productos")
-            .delete()
-            .eq("id", id);
-
+    const { error } = await supabase
+        .from("productos")
+        .delete()
+        .eq("id", id);
 
     if (error) {
 
@@ -1747,21 +1501,21 @@ async function eliminarProducto(id) {
             error
         );
 
-
         mostrarMensajeAdmin(
-            "No se pudo eliminar el producto.",
+            traducirErrorAdmin(
+                error,
+                "No se pudo eliminar el producto."
+            ),
             "error"
         );
 
         return;
     }
 
-
     mostrarMensajeAdmin(
         "Producto eliminado correctamente.",
         "exito"
     );
-
 
     await cargarDatosAdministracion();
 }
@@ -1776,53 +1530,34 @@ function actualizarResumen() {
     const totalCategorias =
         categoriasAdminCache.length;
 
-
     const totalProductos =
         productosAdminCache.length;
-
 
     const totalDestacados =
         productosAdminCache.filter(
             producto => producto.destacado
         ).length;
 
-
     const totalActivos =
         productosAdminCache.filter(
             producto => producto.activo
         ).length;
 
+    document.getElementById(
+        "total-categorias"
+    ).textContent = totalCategorias;
 
-    document
-        .getElementById(
-            "total-categorias"
-        )
-        .textContent =
-            totalCategorias;
+    document.getElementById(
+        "total-productos"
+    ).textContent = totalProductos;
 
+    document.getElementById(
+        "total-destacados"
+    ).textContent = totalDestacados;
 
-    document
-        .getElementById(
-            "total-productos"
-        )
-        .textContent =
-            totalProductos;
-
-
-    document
-        .getElementById(
-            "total-destacados"
-        )
-        .textContent =
-            totalDestacados;
-
-
-    document
-        .getElementById(
-            "total-activos"
-        )
-        .textContent =
-            totalActivos;
+    document.getElementById(
+        "total-activos"
+    ).textContent = totalActivos;
 }
 
 
@@ -1832,12 +1567,9 @@ function actualizarResumen() {
 
 function abrirModal(id) {
 
-    const modal =
-        document.getElementById(id);
-
+    const modal = document.getElementById(id);
 
     if (!modal) return;
-
 
     modal.classList.add("abierto");
 
@@ -1846,20 +1578,15 @@ function abrirModal(id) {
         "false"
     );
 
-
-    document.body.style.overflow =
-        "hidden";
+    document.body.style.overflow = "hidden";
 }
 
 
 function cerrarModal(id) {
 
-    const modal =
-        document.getElementById(id);
-
+    const modal = document.getElementById(id);
 
     if (!modal) return;
-
 
     modal.classList.remove("abierto");
 
@@ -1868,9 +1595,7 @@ function cerrarModal(id) {
         "true"
     );
 
-
-    document.body.style.overflow =
-        "";
+    document.body.style.overflow = "";
 }
 
 
@@ -1880,21 +1605,15 @@ function cerrarModal(id) {
 
 async function cerrarSesion() {
 
-    const confirmar =
-        confirm(
-            "¿Deseas cerrar la sesión administrativa?"
-        );
-
+    const confirmar = confirm(
+        "¿Deseas cerrar la sesión administrativa?"
+    );
 
     if (!confirmar) return;
 
-
     const supabase = obtenerSupabase();
 
-
-    const { error } =
-        await supabase.auth.signOut();
-
+    const { error } = await supabase.auth.signOut();
 
     if (error) {
 
@@ -1902,7 +1621,6 @@ async function cerrarSesion() {
             "Error cerrando sesión:",
             error
         );
-
 
         mostrarMensajeAdmin(
             "No se pudo cerrar la sesión.",
@@ -1912,9 +1630,7 @@ async function cerrarSesion() {
         return;
     }
 
-
-    window.location.href =
-        "login.html";
+    window.location.href = "login.html";
 }
 
 
@@ -1927,34 +1643,24 @@ function mostrarMensajeAdmin(
     tipo = "exito"
 ) {
 
-    const elemento =
-        document.getElementById(
-            "mensaje-admin"
-        );
-
+    const elemento = document.getElementById(
+        "mensaje-admin"
+    );
 
     if (!elemento) return;
 
-
-    elemento.textContent =
-        mensaje;
-
+    elemento.textContent = mensaje;
 
     elemento.className =
         `mensaje-admin visible ${tipo}`;
-
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 
-
     setTimeout(() => {
-
-        elemento.className =
-            "mensaje-admin";
-
+        elemento.className = "mensaje-admin";
     }, 5000);
 }
 
@@ -1972,43 +1678,41 @@ function traducirErrorAdmin(
         return mensajePredeterminado;
     }
 
-
-    const mensaje =
-        String(
-            error.message || ""
-        ).toLowerCase();
-
+    const mensaje = String(
+        error.message || ""
+    ).toLowerCase();
 
     if (
-        mensaje.includes(
-            "duplicate"
-        ) ||
-        mensaje.includes(
-            "unique"
-        )
+        mensaje.includes("duplicate") ||
+        mensaje.includes("unique")
     ) {
-
         return "Ya existe un registro con esos datos.";
     }
 
-
     if (
-        mensaje.includes(
-            "row-level security"
-        )
+        mensaje.includes("row-level security")
     ) {
-
         return (
             "No tienes permisos administrativos " +
             "para realizar esta operación."
         );
     }
 
+    if (
+        mensaje.includes("estatus_comercial") &&
+        (
+            mensaje.includes("column") ||
+            mensaje.includes("schema cache") ||
+            mensaje.includes("does not exist")
+        )
+    ) {
+        return (
+            "No se encontró la columna estatus_comercial " +
+            "en Supabase. Verifica la estructura de la tabla productos."
+        );
+    }
 
-    return (
-        error.message ||
-        mensajePredeterminado
-    );
+    return error.message || mensajePredeterminado;
 }
 
 
@@ -2023,10 +1727,8 @@ function formatearPrecio(precio) {
         precio === undefined ||
         precio === ""
     ) {
-
         return "Consultar";
     }
-
 
     return new Intl.NumberFormat(
         "es-NI",
@@ -2040,31 +1742,23 @@ function formatearPrecio(precio) {
 
 
 /* =========================================================
-   EXTENSIÓN IMAGEN
+   EXTENSIÓN DE IMAGEN
 ========================================================= */
 
-function obtenerExtensionImagen(
-    nombre
-) {
+function obtenerExtensionImagen(nombre) {
 
-    const partes =
-        nombre
-            .split(".")
-            .filter(Boolean);
-
+    const partes = nombre
+        .split(".")
+        .filter(Boolean);
 
     if (!partes.length) {
         return "jpg";
     }
 
-
     return partes
         .pop()
         .toLowerCase()
-        .replace(
-            /[^a-z0-9]/g,
-            ""
-        );
+        .replace(/[^a-z0-9]/g, "") || "jpg";
 }
 
 
@@ -2075,26 +1769,11 @@ function obtenerExtensionImagen(
 function escaparHTML(valor) {
 
     return String(valor ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 

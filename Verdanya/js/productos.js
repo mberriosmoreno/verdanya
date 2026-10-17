@@ -1,3 +1,4 @@
+
 /* =========================================================
    VERDANYA
    CATÁLOGO DE PRODUCTOS
@@ -37,15 +38,13 @@ async function iniciarCatalogo() {
         return;
     }
 
-
     configurarBuscador();
 
     configurarFiltroCategoria();
 
-
     /*
-       Primero obtenemos la categoría
-       enviada desde la URL.
+       Obtenemos la categoría enviada
+       desde la URL.
     */
 
     const parametros =
@@ -53,10 +52,8 @@ async function iniciarCatalogo() {
             window.location.search
         );
 
-
     const categoriaURL =
         parametros.get("categoria");
-
 
     if (categoriaURL) {
 
@@ -65,15 +62,11 @@ async function iniciarCatalogo() {
 
     }
 
-
     /*
        Cargamos primero las categorías.
-       Esto permite seleccionar correctamente
-       la categoría recibida por URL.
     */
 
     await cargarCategorias(supabase);
-
 
     /*
        Después cargamos los productos.
@@ -81,9 +74,8 @@ async function iniciarCatalogo() {
 
     await cargarProductos(supabase);
 
-
     /*
-       Finalmente aplicamos TODOS los filtros.
+       Finalmente aplicamos los filtros.
     */
 
     aplicarFiltros();
@@ -127,7 +119,6 @@ function configurarWhatsApp() {
         return;
     }
 
-
     boton.href =
         crearEnlaceWhatsApp(
             VERDANYA_CONFIG.whatsapp.mensajeGeneral
@@ -146,25 +137,15 @@ async function cargarCategorias(supabase) {
         data,
         error
     } = await supabase
-
         .from("categorias")
-
-        .select(
-            "id,nombre"
-        )
-
-        .eq(
-            "activo",
-            true
-        )
-
+        .select("id,nombre")
+        .eq("activo", true)
         .order(
             "nombre",
             {
                 ascending: true
             }
         );
-
 
     if (error) {
 
@@ -176,10 +157,8 @@ async function cargarCategorias(supabase) {
         return;
     }
 
-
     const categorias =
         data || [];
-
 
     llenarFiltroCategorias(
         categorias
@@ -203,13 +182,11 @@ function llenarFiltroCategorias(categorias) {
         return;
     }
 
-
     select.innerHTML = `
         <option value="">
             Todas las categorías
         </option>
     `;
-
 
     categorias.forEach(
         categoria => {
@@ -219,14 +196,11 @@ function llenarFiltroCategorias(categorias) {
                     "option"
                 );
 
-
             opcion.value =
                 String(categoria.id);
 
-
             opcion.textContent =
                 categoria.nombre;
-
 
             select.appendChild(
                 opcion
@@ -235,10 +209,9 @@ function llenarFiltroCategorias(categorias) {
         }
     );
 
-
     /*
        Aplicamos la categoría enviada
-       por la URL.
+       por la URL, si existe.
     */
 
     if (categoriaSeleccionada) {
@@ -249,7 +222,6 @@ function llenarFiltroCategorias(categorias) {
                     String(categoria.id) ===
                     String(categoriaSeleccionada)
             );
-
 
         if (categoriaExiste) {
 
@@ -277,16 +249,12 @@ async function cargarProductos(supabase) {
 
     mostrarCarga();
 
-
     const {
         data,
         error
     } = await supabase
-
         .from("vista_catalogo")
-
-        .select(
-            `
+        .select(`
             id,
             nombre,
             slug,
@@ -297,22 +265,16 @@ async function cargarProductos(supabase) {
             imagen_principal,
             activo,
             destacado,
+            estatus_comercial,
             created_at
-            `
-        )
-
-        .eq(
-            "activo",
-            true
-        )
-
+        `)
+        .eq("activo", true)
         .order(
             "created_at",
             {
                 ascending: false
             }
         );
-
 
     if (error) {
 
@@ -321,15 +283,12 @@ async function cargarProductos(supabase) {
             error
         );
 
-
         mostrarError(
             "No fue posible cargar las plantas."
         );
 
-
         return;
     }
-
 
     productosCatalogo =
         data || [];
@@ -352,7 +311,6 @@ function configurarBuscador() {
         return;
     }
 
-
     buscador.addEventListener(
         "input",
         () => {
@@ -361,7 +319,6 @@ function configurarBuscador() {
                 buscador.value
                     .trim()
                     .toLowerCase();
-
 
             aplicarFiltros();
 
@@ -386,7 +343,6 @@ function configurarFiltroCategoria() {
         return;
     }
 
-
     select.addEventListener(
         "change",
         () => {
@@ -396,17 +352,15 @@ function configurarFiltroCategoria() {
                     select.value || ""
                 );
 
-
             /*
-               Si el usuario cambia manualmente
-               la categoría, actualizamos la URL.
+               Actualizamos la URL cuando
+               el usuario cambia la categoría.
             */
 
             const url =
                 new URL(
                     window.location.href
                 );
-
 
             if (categoriaSeleccionada) {
 
@@ -423,13 +377,11 @@ function configurarFiltroCategoria() {
 
             }
 
-
             window.history.replaceState(
                 {},
                 "",
                 url
             );
-
 
             aplicarFiltros();
 
@@ -448,7 +400,6 @@ function aplicarFiltros() {
     let productos =
         [...productosCatalogo];
 
-
     /*
        FILTRO DE TEXTO
     */
@@ -461,50 +412,29 @@ function aplicarFiltros() {
 
                     const nombre =
                         (
-                            producto.nombre ||
-                            ""
+                            producto.nombre || ""
                         ).toLowerCase();
-
 
                     const descripcion =
                         (
-                            producto.descripcion ||
-                            ""
+                            producto.descripcion || ""
                         ).toLowerCase();
-
 
                     const categoria =
                         (
-                            producto.categoria_nombre ||
-                            ""
+                            producto.categoria_nombre || ""
                         ).toLowerCase();
 
-
                     return (
-
-                        nombre.includes(
-                            textoBusqueda
-                        )
-
-                        ||
-
-                        descripcion.includes(
-                            textoBusqueda
-                        )
-
-                        ||
-
-                        categoria.includes(
-                            textoBusqueda
-                        )
-
+                        nombre.includes(textoBusqueda) ||
+                        descripcion.includes(textoBusqueda) ||
+                        categoria.includes(textoBusqueda)
                     );
 
                 }
             );
 
     }
-
 
     /*
        FILTRO DE CATEGORÍA
@@ -527,7 +457,6 @@ function aplicarFiltros() {
 
     }
 
-
     mostrarProductos(
         productos
     );
@@ -546,19 +475,15 @@ function mostrarProductos(productos) {
             "lista-productos"
         );
 
-
     if (!contenedor) {
         return;
     }
 
-
     ocultarEstados();
-
 
     actualizarContador(
         productos.length
     );
-
 
     if (productos.length === 0) {
 
@@ -568,7 +493,6 @@ function mostrarProductos(productos) {
 
         return;
     }
-
 
     contenedor.innerHTML =
         productos
@@ -581,6 +505,37 @@ function mostrarProductos(productos) {
 
 
 /* =========================================================
+   ESTADO COMERCIAL
+========================================================= */
+
+function obtenerEstadoComercial(producto) {
+
+    /*
+       Solo reconocemos los dos estados
+       comerciales permitidos.
+
+       Si falta el campo o contiene un valor
+       inesperado, mostramos "Disponible"
+       para mantener compatibilidad con
+       registros antiguos. Conviene corregir
+       esos registros en Supabase.
+    */
+
+    const estado =
+        String(
+            producto.estatus_comercial || ""
+        ).trim().toLowerCase();
+
+    if (estado === "vendida") {
+        return "Vendida";
+    }
+
+    return "Disponible";
+
+}
+
+
+/* =========================================================
    TARJETA DE PRODUCTO
 ========================================================= */
 
@@ -588,10 +543,8 @@ function crearTarjetaProducto(producto) {
 
     const nombre =
         escaparHTML(
-            producto.nombre ||
-            "Planta"
+            producto.nombre || "Planta"
         );
-
 
     const descripcion =
         escaparHTML(
@@ -599,75 +552,139 @@ function crearTarjetaProducto(producto) {
             "Planta disponible en Verdanya."
         );
 
-
     const categoria =
         escaparHTML(
             producto.categoria_nombre ||
             "Plantas"
         );
 
-
     const slug =
         escaparAtributo(
-            producto.slug
+            producto.slug || ""
         );
-
 
     const precio =
         formatearPrecio(
             producto.precio
         );
 
-
-    const mensajeWhatsApp =
-        `Hola, Verdanya. Me interesa la planta ${producto.nombre || "disponible"}${producto.precio !== null && producto.precio !== undefined ? ` (C$${Number(producto.precio).toFixed(2)})` : ""}. ¿Está disponible?`;
-
-
-    const enlaceWhatsApp =
-        crearEnlaceWhatsApp(
-            mensajeWhatsApp
+    const estadoComercial =
+        obtenerEstadoComercial(
+            producto
         );
 
+    const estaDisponible =
+        estadoComercial === "Disponible";
+
+    /*
+       Enlace a WhatsApp únicamente para
+       las plantas disponibles.
+    */
+
+    let accionComercial = "";
+
+    if (estaDisponible) {
+
+        const nombreWhatsApp =
+            producto.nombre || "la planta";
+
+        const precioWhatsApp =
+            producto.precio !== null &&
+            producto.precio !== undefined &&
+            producto.precio !== ""
+                ? ` (C$${Number(producto.precio).toFixed(2)})`
+                : "";
+
+        const mensajeWhatsApp =
+            `Hola, Verdanya. Me interesa la planta ${nombreWhatsApp}${precioWhatsApp}. ¿Está disponible?`;
+
+        const enlaceWhatsApp =
+            crearEnlaceWhatsApp(
+                mensajeWhatsApp
+            );
+
+        accionComercial = `
+            <div class="tarjeta-producto-acciones">
+                <a
+                    href="${escaparAtributo(enlaceWhatsApp)}"
+                    class="boton boton-whatsapp boton-whatsapp-producto"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    💬 Consultar por WhatsApp
+                </a>
+            </div>
+        `;
+
+    } else {
+
+        accionComercial = `
+            <div class="tarjeta-producto-acciones">
+                <span class="producto-no-disponible">
+                    Esta planta ya fue vendida
+                </span>
+            </div>
+        `;
+
+    }
+
+    /*
+       Imagen de la planta.
+    */
 
     let contenidoImagen;
-
 
     if (producto.imagen_principal) {
 
         contenidoImagen = `
-
             <img
                 class="tarjeta-producto-imagen"
                 src="${escaparAtributo(producto.imagen_principal)}"
                 alt="${escaparAtributo(nombre)}"
                 loading="lazy"
             >
-
         `;
 
     } else {
 
         contenidoImagen = `
-
             <div class="tarjeta-producto-imagen tarjeta-sin-imagen">
                 🌱
             </div>
-
         `;
 
     }
 
+    /*
+       Etiqueta comercial visible.
+    */
+
+    const etiquetaComercial =
+        estaDisponible
+            ? `
+                <span class="etiqueta-comercial etiqueta-disponible">
+                    Disponible
+                </span>
+            `
+            : `
+                <span class="etiqueta-comercial etiqueta-vendida">
+                    Vendida
+                </span>
+            `;
 
     return `
-
         <article class="tarjeta-producto">
 
             <a
                 href="producto.html?slug=${slug}"
                 class="tarjeta-producto-enlace"
+                aria-label="Ver detalles de ${nombre}"
             >
 
-                ${contenidoImagen}
+                <div class="tarjeta-producto-imagen-contenedor">
+                    ${contenidoImagen}
+                    ${etiquetaComercial}
+                </div>
 
                 <div class="tarjeta-producto-contenido">
 
@@ -691,22 +708,9 @@ function crearTarjetaProducto(producto) {
 
             </a>
 
-
-            <div class="tarjeta-producto-acciones">
-
-                <a
-                    href="${enlaceWhatsApp}"
-                    class="boton boton-whatsapp boton-whatsapp-producto"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    💬 Pedir por WhatsApp
-                </a>
-
-            </div>
+            ${accionComercial}
 
         </article>
-
     `;
 
 }
@@ -728,17 +732,14 @@ function formatearPrecio(precio) {
 
     }
 
-
     const numero =
         Number(precio);
-
 
     if (Number.isNaN(numero)) {
 
         return "Consultar";
 
     }
-
 
     return `C$${numero.toFixed(2)}`;
 
@@ -756,17 +757,14 @@ function actualizarContador(cantidad) {
             "contador-productos"
         );
 
-
     if (!contador) {
         return;
     }
-
 
     const palabra =
         cantidad === 1
             ? "planta encontrada"
             : "plantas encontradas";
-
 
     contador.textContent =
         `${cantidad} ${palabra}`;
@@ -795,7 +793,6 @@ function mostrarCarga() {
             "estado-vacio"
         );
 
-
     if (carga) {
         carga.hidden = false;
     }
@@ -822,19 +819,15 @@ function mostrarSinResultados() {
             "estado-vacio"
         );
 
-
     if (!vacio) {
         return;
     }
 
-
     const titulo =
         vacio.querySelector("h3");
 
-
     const texto =
         vacio.querySelector("p");
-
 
     if (titulo) {
 
@@ -843,14 +836,12 @@ function mostrarSinResultados() {
 
     }
 
-
     if (texto) {
 
         texto.textContent =
             "Prueba con otra búsqueda o selecciona otra categoría.";
 
     }
-
 
     vacio.hidden = false;
 
@@ -878,7 +869,6 @@ function mostrarError(mensaje) {
             "estado-vacio"
         );
 
-
     if (carga) {
         carga.hidden = true;
     }
@@ -887,13 +877,29 @@ function mostrarError(mensaje) {
         vacio.hidden = true;
     }
 
-
     if (error) {
 
         error.hidden = false;
 
         error.textContent =
             mensaje;
+
+    } else {
+
+        const contenedor =
+            document.getElementById(
+                "lista-productos"
+            );
+
+        if (contenedor) {
+
+            contenedor.innerHTML = `
+                <div class="mensaje mensaje-error">
+                    ${escaparHTML(mensaje)}
+                </div>
+            `;
+
+        }
 
     }
 
@@ -920,7 +926,6 @@ function ocultarEstados() {
         document.getElementById(
             "estado-vacio"
         );
-
 
     if (carga) {
         carga.hidden = true;

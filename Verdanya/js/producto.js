@@ -21,8 +21,7 @@ async function iniciarProducto() {
 
     configurarWhatsAppGeneral();
 
-    const supabase =
-        obtenerSupabase();
+    const supabase = obtenerSupabase();
 
     if (!supabase) {
 
@@ -33,8 +32,7 @@ async function iniciarProducto() {
         return;
     }
 
-    const slug =
-        obtenerSlug();
+    const slug = obtenerSlug();
 
     if (!slug) {
 
@@ -79,8 +77,7 @@ async function cargarProducto(
         error
     } = await supabase
         .from("vista_catalogo")
-        .select(
-            `
+        .select(`
             id,
             nombre,
             slug,
@@ -91,18 +88,12 @@ async function cargarProducto(
             imagen_principal,
             activo,
             destacado,
+            estatus_comercial,
             created_at,
             updated_at
-            `
-        )
-        .eq(
-            "slug",
-            slug
-        )
-        .eq(
-            "activo",
-            true
-        )
+        `)
+        .eq("slug", slug)
+        .eq("activo", true)
         .maybeSingle();
 
     if (error) {
@@ -126,12 +117,30 @@ async function cargarProducto(
         return;
     }
 
-    productoActual =
-        data;
+    productoActual = data;
 
-    mostrarProducto(
-        data
-    );
+    mostrarProducto(data);
+}
+
+
+/* =========================================================
+   OBTENER ESTATUS COMERCIAL
+========================================================= */
+
+function obtenerEstadoComercial(producto) {
+
+    const estado =
+        String(
+            producto.estatus_comercial || ""
+        )
+        .trim()
+        .toLowerCase();
+
+    if (estado === "vendida") {
+        return "Vendida";
+    }
+
+    return "Disponible";
 }
 
 
@@ -139,9 +148,7 @@ async function cargarProducto(
    MOSTRAR PRODUCTO
 ========================================================= */
 
-function mostrarProducto(
-    producto
-) {
+function mostrarProducto(producto) {
 
     const contenedor =
         document.getElementById(
@@ -159,14 +166,13 @@ function mostrarProducto(
 
     const nombre =
         escaparHTML(
-            producto.nombre ||
-            "Planta"
+            producto.nombre || "Planta"
         );
 
     const descripcion =
         escaparHTML(
             producto.descripcion ||
-            "Planta disponible en Verdanya."
+            "Planta de Verdanya."
         );
 
     const categoria =
@@ -180,10 +186,11 @@ function mostrarProducto(
             producto.precio
         );
 
-    const slug =
-        escaparAtributo(
-            producto.slug
-        );
+    const estadoComercial =
+        obtenerEstadoComercial(producto);
+
+    const estaDisponible =
+        estadoComercial === "Disponible";
 
 
     /* =====================================================
@@ -192,9 +199,7 @@ function mostrarProducto(
 
     let contenidoImagen;
 
-    if (
-        producto.imagen_principal
-    ) {
+    if (producto.imagen_principal) {
 
         contenidoImagen = `
             <img
@@ -202,7 +207,7 @@ function mostrarProducto(
                     producto.imagen_principal
                 )}"
                 alt="${escaparAtributo(
-                    nombre
+                    producto.nombre || "Planta"
                 )}"
                 class="producto-imagen"
             >
@@ -211,9 +216,7 @@ function mostrarProducto(
     } else {
 
         contenidoImagen = `
-            <div
-                class="producto-imagen-placeholder"
-            >
+            <div class="producto-imagen-placeholder">
                 🌱
             </div>
         `;
@@ -221,16 +224,69 @@ function mostrarProducto(
 
 
     /* =====================================================
-       WHATSAPP
+       ETIQUETA DE ESTATUS COMERCIAL
     ===================================================== */
 
-    const mensajeWhatsApp =
-        `Hola, Verdanya. Me interesa la planta ${producto.nombre || "disponible"}${producto.precio !== null && producto.precio !== undefined ? ` (C$${Number(producto.precio).toFixed(2)})` : ""}. ¿Está disponible?`;
+    const etiquetaComercial =
+        estaDisponible
+            ? `
+                <span class="etiqueta-comercial etiqueta-disponible">
+                    Disponible
+                </span>
+            `
+            : `
+                <span class="etiqueta-comercial etiqueta-vendida">
+                    Vendida
+                </span>
+            `;
 
-    const enlaceWhatsApp =
-        crearEnlaceWhatsApp(
-            mensajeWhatsApp
-        );
+
+    /* =====================================================
+       ACCIONES COMERCIALES
+    ===================================================== */
+
+    let accionesComerciales = "";
+
+    if (estaDisponible) {
+
+        const nombreWhatsApp =
+            producto.nombre || "la planta";
+
+        const precioWhatsApp =
+            producto.precio !== null &&
+            producto.precio !== undefined &&
+            producto.precio !== ""
+                ? ` (C$${Number(producto.precio).toFixed(2)})`
+                : "";
+
+        const mensajeWhatsApp =
+            `Hola, Verdanya. Me interesa la planta ${nombreWhatsApp}${precioWhatsApp}. ¿Está disponible?`;
+
+        const enlaceWhatsApp =
+            crearEnlaceWhatsApp(
+                mensajeWhatsApp
+            );
+
+        accionesComerciales = `
+            <a
+                href="${escaparAtributo(enlaceWhatsApp)}"
+                class="boton boton-whatsapp"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                💬 Pedir por WhatsApp
+            </a>
+        `;
+
+    } else {
+
+        accionesComerciales = `
+            <p class="producto-mensaje-vendida">
+                Esta planta ya fue vendida.
+                Puedes consultar nuestro catálogo para encontrar otras plantas.
+            </p>
+        `;
+    }
 
 
     /* =====================================================
@@ -239,15 +295,11 @@ function mostrarProducto(
 
     contenedor.innerHTML = `
 
-        <div
-            class="producto-detalle-contenido"
-        >
+        <div class="producto-detalle-contenido">
 
             <!-- IMAGEN -->
 
-            <div
-                class="producto-imagen-contenedor"
-            >
+            <div class="producto-imagen-contenedor">
 
                 ${contenidoImagen}
 
@@ -256,57 +308,42 @@ function mostrarProducto(
 
             <!-- INFORMACIÓN -->
 
-            <div
-                class="producto-informacion"
-            >
+            <div class="producto-informacion">
 
-                <span
-                    class="producto-categoria"
-                >
+                <span class="producto-categoria">
                     ${categoria}
                 </span>
 
 
-                <h1
-                    class="producto-titulo"
-                >
+                <h1 class="producto-titulo">
                     ${nombre}
                 </h1>
 
 
-                <div
-                    class="producto-precio-detalle"
-                >
+                <div class="producto-estatus">
+                    ${etiquetaComercial}
+                </div>
+
+
+                <div class="producto-precio-detalle">
                     ${precio}
                 </div>
 
 
-                <div
-                    class="producto-descripcion"
-                >
+                <div class="producto-descripcion">
                     ${descripcion}
                 </div>
 
 
                 <!-- ACCIONES -->
 
-                <div
-                    class="producto-acciones"
-                >
+                <div class="producto-acciones">
 
-                    <a
-                        href="${enlaceWhatsApp}"
-                        class="boton boton-whatsapp"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        💬 Pedir por WhatsApp
-                    </a>
-
+                    ${accionesComerciales}
 
                     <a
                         href="productos.html?categoria=${encodeURIComponent(
-                            producto.categoria_id
+                            producto.categoria_id || ""
                         )}"
                         class="boton boton-secundario"
                     >
@@ -334,9 +371,7 @@ function mostrarProducto(
    FORMATO DE PRECIO
 ========================================================= */
 
-function formatearPrecio(
-    precio
-) {
+function formatearPrecio(precio) {
 
     if (
         precio === null ||
@@ -347,13 +382,9 @@ function formatearPrecio(
         return "Consultar";
     }
 
-    const numero =
-        Number(precio);
+    const numero = Number(precio);
 
-    if (
-        Number.isNaN(numero)
-    ) {
-
+    if (Number.isNaN(numero)) {
         return "Consultar";
     }
 
@@ -420,9 +451,7 @@ function mostrarProductoNoEncontrado() {
 
     contenedor.innerHTML = `
 
-        <div
-            class="producto-no-encontrado"
-        >
+        <div class="producto-no-encontrado">
 
             <h2>
                 Planta no encontrada
@@ -449,9 +478,7 @@ function mostrarProductoNoEncontrado() {
    ERROR DEL PRODUCTO
 ========================================================= */
 
-function mostrarErrorProducto(
-    mensaje
-) {
+function mostrarErrorProducto(mensaje) {
 
     const contenedor =
         document.getElementById(
@@ -464,18 +491,14 @@ function mostrarErrorProducto(
 
     contenedor.innerHTML = `
 
-        <div
-            class="producto-no-encontrado"
-        >
+        <div class="producto-no-encontrado">
 
             <h2>
                 Ocurrió un problema
             </h2>
 
             <p>
-                ${escaparHTML(
-                    mensaje
-                )}
+                ${escaparHTML(mensaje)}
             </p>
 
             <a
@@ -494,31 +517,14 @@ function mostrarErrorProducto(
    SEGURIDAD HTML
 ========================================================= */
 
-function escaparHTML(
-    valor
-) {
+function escaparHTML(valor) {
 
     return String(valor)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 
@@ -526,11 +532,7 @@ function escaparHTML(
    SEGURIDAD DE ATRIBUTOS
 ========================================================= */
 
-function escaparAtributo(
-    valor
-) {
+function escaparAtributo(valor) {
 
-    return escaparHTML(
-        valor
-    );
+    return escaparHTML(valor);
 }

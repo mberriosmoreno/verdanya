@@ -120,12 +120,77 @@
     line-height: 1.1;
 }
 
+
+/* =========================================================
+   ESTATUS COMERCIAL
+========================================================= */
+
+.producto-estatus {
+    margin-bottom: 20px;
+}
+
+.etiqueta-comercial {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+}
+
+/* Planta disponible */
+
+.etiqueta-disponible {
+    color: #205b36;
+    background: #e4f3e7;
+    border: 1px solid #b8dfc1;
+}
+
+.etiqueta-disponible::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #2f8a4c;
+}
+
+/* Planta vendida */
+
+.etiqueta-vendida {
+    color: #8a3030;
+    background: #fbeaea;
+    border: 1px solid #edc4c4;
+}
+
+.etiqueta-vendida::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #bd4545;
+}
+
+
+/* =========================================================
+   PRECIO
+========================================================= */
+
 .producto-precio-detalle {
     margin-bottom: 25px;
     color: var(--verde);
     font-size: 1.7rem;
     font-weight: 800;
 }
+
+
+/* =========================================================
+   DESCRIPCIÓN
+========================================================= */
 
 .producto-descripcion {
     margin-bottom: 30px;
@@ -134,15 +199,38 @@
     line-height: 1.8;
 }
 
+
+/* =========================================================
+   ACCIONES
+========================================================= */
+
 .producto-acciones {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 12px;
 }
 
 .producto-acciones .boton-whatsapp {
     width: auto;
     min-width: 230px;
+}
+
+
+/* =========================================================
+   MENSAJE DE PLANTA VENDIDA
+========================================================= */
+
+.producto-mensaje-vendida {
+    flex-basis: 100%;
+    margin: 0;
+    padding: 14px 16px;
+    border-left: 4px solid #bd4545;
+    border-radius: 5px;
+    background: #fdf1f1;
+    color: #783333;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 

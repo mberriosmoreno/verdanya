@@ -214,6 +214,97 @@
 
 
 /* =========================================================
+   ESTADO COMERCIAL DE LAS PLANTAS
+========================================================= */
+
+
+/* Contenedor de la imagen y su etiqueta */
+
+.tarjeta-producto-imagen-contenedor {
+
+    position:
+        relative;
+
+}
+
+
+/* Etiqueta general */
+
+.etiqueta-comercial {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        7px 13px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        700;
+
+    line-height:
+        1;
+
+    letter-spacing:
+        0.3px;
+
+}
+
+
+/* Planta disponible */
+
+.etiqueta-disponible {
+
+    background:
+        #e2f3e7;
+
+    color:
+        #24643a;
+
+    border:
+        1px solid #b8dfc3;
+
+}
+
+
+/* Planta vendida */
+
+.etiqueta-vendida {
+
+    background:
+        #fce8e6;
+
+    color:
+        #a12b24;
+
+    border:
+        1px solid #f2c4c0;
+
+}
+
+
+/* Apariencia de una planta vendida */
+
+.producto-no-disponible {
+
+    opacity:
+        0.85;
+
+}
+
+
+/* =========================================================
    SIN RESULTADOS
 ========================================================= */
 
@@ -288,6 +379,17 @@
 
         padding:
             18px;
+
+    }
+
+
+    .etiqueta-comercial {
+
+        padding:
+            6px 10px;
+
+        font-size:
+            0.74rem;
 
     }
 
